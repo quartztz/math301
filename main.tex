@@ -1,0 +1,72 @@
+\documentclass{report}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[normalem]{ulem}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{changepage}
+\usepackage{mdframed}
+\usepackage{xcolor}
+
+\newmdenv[
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{siderules}
+
+\def\labelitemi{\ensuremath{\triangleright}}
+\definecolor{blueish}{RGB}{80, 150, 150}
+\renewcommand{\emph}[1]{{\color{blueish} #1}}
+
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\sep}{
+  \begin{center}
+    \noindent\rule{0.35\textwidth}{0.5pt}
+  \end{center}
+}
+
+\newcommand{\aparte}[2]{
+  \vspace{0.5em}
+  \begin{adjustwidth}{24pt}{0pt}
+    \begin{siderules}
+      \leavevmode\reversemarginpar{\raggedleft \textit{#1}} #2
+    \end{siderules}
+  \end{adjustwidth}
+  \vspace{0.75em}}
+    
+\title{Algebra - MATH310}
+\author{Jacopo ``quartztz'' Moretti}
+\date{January 2024}
+
+\begin{document}
+  \maketitle
+
+  \chapter*{Preface}
+  Helo! I'm Jack :3.
+
+  I'm a student that need sto type out courses in order to make sure they properly understand them. So I put them out into the world! They might help you more than they help me :D. They are given as they are, with no guarantee of quality but guarantee of goodwill, bla bla bla. You know the gist of it. 
+
+  \tableofcontents
+
+  \pagebreak
+
+  \input{chapters/chapter1.tex}
+
+  \input{chapters/chapter2.tex}
+  
+  \input{chapters/chapter3.tex}
+
+  \appendix
+  
+  \input{chapters/appendixA.tex}
+\end{document}

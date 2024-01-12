@@ -1,0 +1,23 @@
+\chapter{Proofs from exercise sets}
+  This barely needs such pompous titles but oh well. It's fun. 
+  
+  \section{Theorem \ref{thm1}}
+  \begin{theorem*}
+    Strong Induction $\Rightarrow$ Well-ordering principle.
+  \end{theorem*}
+  \begin{proof}
+    We can prove this by induction. Suppose there exists a subset $Y \subset \mathbb{N}$ such that it contains no least element. Consider $P(n) = \text{''}n \notin Y\text{''}$.
+    \begin{itemize}
+      \item[] \textbf{Base:} If 0 was in $Y$, then it would be its least element, since there are no smaller elements of $\mathbb{N}$. As such, it cannot be that $0 \in Y$, meaning $P(0)$ is true.
+      \item[] \textbf{Induction:} Assume $P(k)$ is true for any $k \in \{0, 1, ..., n\}$. Then, if it was in $Y$, $n + 1$ would be its smallest element, since every smaller element is not in $Y$. As such, $P(n + 1)$ holds as well. 
+      Since $P$ is hereditary and true for 0, it is true for any $n \in \mathbb{N}$.
+    \end{itemize}
+  \end{proof}
+
+  \section{Theorem \ref{primefact}}
+  \begin{theorem}
+    Any $n > 1$ can be expressed by the product of primes.
+  \end{theorem}
+  \begin{proof}
+    Consider $S = \{n \in \mathbb{N}: n > 1 \land n \text{ does not have a prime factorization}\}$. Then, we take the smallest element in this set, $k$. $k$ cannot be a prime, so there exists $a, b < k$ such that $k = ab$. However, $a$ and $b$ cannot be in $S$, since they are smaller than $k$. This means that $a = \prod {p_{a,k}}^{a_k}, b = \prod {p_{b, k}}^{b_k}$, meaning that their product is the product of primes. Therefore, $k$ cannot be in $S$, so $S$ has to be empty.
+  \end{proof}

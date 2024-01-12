@@ -1,0 +1,34 @@
+\chapter{Introduction}
+  \marginpar{Week 1}
+  Algebra rests on 3 basic principles, which are equivalent in nature. 
+  \begin{enumerate}
+    \item \textbf{Induction:} Let $S \subset \mathbb{N}$ such that $0 \in S$ and $n \in S \Rightarrow n + 1 \in S$. Then, $S = \mathbb{N}$. 
+    \item \textbf{Well-ordering principle:} For any non-empty $A \subset \mathbb{N}$, there exists an element $a: \forall b \in A, a \leqslant b$. 
+    \item \textbf{Strong induction:} Let $S \subset \mathbb{N}$ such that $0 \in S$ and $\{0, ..., n\} \in S \Rightarrow n + 1 \in S$. Then, $S = \mathbb{N}$. 
+  \end{enumerate}
+
+  It is well-established that these three principles are equivalent. Let us prove it. 
+
+  \begin{theorem}\label{thm1}
+    \textbf{I} $\Rightarrow$ \textbf{WOP} $\Rightarrow$ \textbf{SI} $\Rightarrow$ \textbf{I}.
+  \end{theorem}
+  \begin{proof}
+    We will prove each induction separately.
+    \begin{enumerate}
+      \item $1. \Rightarrow 3.$ Let $S$ be the construction from the strong induction definition, and let us consider $P(n) = \{0, 1, ..., n\} \subset S$. We can prove it by induction: 
+      \begin{itemize}
+        \item[] \textbf{Base:} $0 \in S$ by construction $\Rightarrow \{0\} \subset S$. 
+        \item[]\textbf{Induction:} Let us prove that $P(k) \Rightarrow P(k + 1)$ for some $k$.
+        \begin{align*}
+          \{0, 1, ..., k\} \subset S \text{ [by IH]} 
+          &\Rightarrow k \in S &\text{ [by construction]} \\
+          &\Rightarrow k + 1 \in S &\text{ [by definition]} \\
+          &\Rightarrow \{0, 1, ..., k, k + 1\} \in S &
+        \end{align*}
+        Since it is hereditary and true for $0$, it is true $\forall n \in \mathbb{N}$ by the induction principle. 
+      \end{itemize} 
+      Since $\{0, 1, ..., n\} \subset \mathbb{N} \ \forall n$, then $S = \mathbb{N}$.
+      \item $2 \Rightarrow 1$. Suppose $S \subset \mathbb{N}$ such that $0 \in S$ and $n \in S \Rightarrow n + 1 \in S$. Consider $S' = \mathbb{N} \setminus S$, which we assume to be nonempty by absurd. By the well-ordering principle, we can pick a least element in $k \in S'$, which is by definition not in $S$. $k$ cannot be zero, since $0 \in S$ by definition, but it can also not be non-zero, since $k \neq 0 \Rightarrow k = m + 1$ for some $m < k$ (therefore not in $S'$). $m \in S$, so by construction, $m + 1 = k \in S$ as well, which is a contradiction. $S'$ has to be empty, so $S = \mathbb{N}$. 
+      \item $3 \Rightarrow 2$. Done in a Problem Set, found in appendix A.
+    \end{enumerate}
+  \end{proof}

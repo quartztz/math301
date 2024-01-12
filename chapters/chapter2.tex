@@ -1,0 +1,137 @@
+\chapter{Primes}
+
+\section{Divisors and primes}
+
+\begin{definition}
+  Let $a, b \in \mathbb{Z}$. We say that $a$ \emph{divides} $b$ (notate: $a|b$) if there exists $k \in \mathbb{Z}$ such that $b = ka$.
+\end{definition}
+\begin{definition}
+  A number $p \in \mathbb{Z}$ is prime if $p > 1$ and the only numbers that divide it are itself and 1.
+\end{definition}
+
+\begin{theorem}
+  Any $n > 1$ has a prime divisor.
+\end{theorem}
+\begin{proof}
+  Let $S = \{n \in \mathbb{N}: n > 1 \land n\text{ has no prime divisors}\}$. We suppose $S$ to be nonempty, meaning it contains a least element $k \in S$. $k$ cannot be prime, since $k|k \ \forall k$. Therefore, it has to be true that $k = ab$ for $a, b < k \in \mathbb{N}$. Since $k$ was the lest element, then, $a \notin S$, meaning that there exists a prime $p$ such that $a = pt$ for $t in \mathbb{N}$. Therefore, $k = ab = ptb \Rightarrow p|k$, contradicting our construction of $S$. Therefore, $S$ must be empty.
+\end{proof}
+\begin{theorem}\label{primefact}
+  Any $n > 1$ can be expressed by the product of primes.
+\end{theorem}
+\aparte{}{This proof was done in an exercise set, and can be found in the appendix.}
+\begin{theorem}
+  The prime number factorization of a number is unique.
+\end{theorem}
+\begin{proof}
+  Let $k = \prod^n p_i = \prod^m q_j$ two distinct prime sets. Suppose without loss of generality that $q_1 > p_1$ and let $t = (q_1 - p_1)q_2...q_m > 0$. Then: 
+  \begin{align*}
+    t 
+    &= (q_1 - p_1)q_2...q_m \\
+    &= q_1q_2...q_m - p_1q_2...q_m \\
+    &= k - p_1q_2...q_m > 0 \Rightarrow p_1|t
+  \end{align*}
+  We know that $p_1 \neq q_j$ for all $j$, so we focus on the only ``weird'' term: 
+  \begin{align*}
+    (q_1 - p_1) &= sp_1 \\
+    \Rightarrow q_1 &= (s + 1)p_1
+  \end{align*}
+  Which is a contradiction because $q_1$ is supposed to be prime. Therefore, the prime factorization is unique. 
+\end{proof}
+
+\section{Integer arithmetic}
+
+\begin{definition}[Euclidian division]
+  Let $n \in \mathbb{Z}, d \in \mathbb{Z}^*$. There exists a unique pair $q, r \in \mathbb{Z}$ such that $n = qd + r$ with $0 < r < d$. 
+\end{definition}
+\begin{proof}
+  \textbf{Existence.}
+  Consider the set of all numbers $S = \{n - kd\}_{k \in \mathbb{Z}} \cap \mathbb{N} = \{n - kd, kd \leqslant n\}_{k \in \mathbb{Z}}$. 
+
+  We know that $S$ is not empty, because: 
+  \begin{itemize}
+    \item if $n >= 0$, then we set $k = 0$, meaning $n \in S$
+    \item if $n < 0$, then we set $k = |n| + 1$, meaning $kd > |n|$ and $n + kd \in S$.
+  \end{itemize}
+  Since it's never empty, we can pick the least element of $S$ by means of the well-ordering principle. Let's call it $r$. Therefore, we have $r = n - kd$ for some $k$. To prove $r < d$, we assume towards absurdity that $r >= d$, meaning that 
+  \[
+    n - (k + 1)d = n - kd - d = r - d >= 0
+  \]
+  meaning $r$ wasn't minimal, which is a contradiction.
+
+  \textbf{Uniqueness.} Suppose $n = q_1d + r_1 = q_2d + r_2$. Without loss of generality, assume $q_1 > q_2$. Then:
+  \[
+    (q_1 - q_2)d + r_1 = r_2 \geqslant d
+  \]
+  Since $r_1$ and $q_1 - q_2$ are positive. This contradicts the definition of $r_2$, and is therefore absurd.
+\end{proof}
+
+\begin{definition}
+  Let $a, b \in \mathbb{Z}$. We define the greatest common divisor ($\gcd$) of two numbers as 
+  \[
+    \gcd(a, b) = \max\{x \in \mathbb{Z}: x|a \land x|b\}
+  \]
+\end{definition}
+\begin{theorem}
+  For $n, q \in \mathbb{Z}, d \in \mathbb{Z}^*$, such that $n = qd + r$, it is always the case that:  
+  \[ \gcd(n, d) = \gcd(d, r) \]
+\end{theorem}
+\begin{proof}
+  By inspection of the relationship $n = qd + r$, it's clear that if $x | n \land x | d$ then $x | r$, and if $x | d \land x | r$ then $x | n$.
+\end{proof}
+
+\aparte{Method}{
+  This induces a special algorithm to compute the gcd of two numbers! Let $d_1, d_2 \in \mathbb{Z}$. Then: 
+  \begin{align*}
+    d_1 &= q_1 d_2 + d_3 \\
+    d_2 &= q_2 d_3 + d_4 \\
+    &... \\
+    d_k &= q_kd_{k + 1} + 0
+  \end{align*}
+  The relationship $\gcd(d_{i - 1}, d_i) = \gcd(d_i, d_{i + 1})$ holds down the tree, meaning that by the end
+  \[
+    \gcd(d_1, d_2) = d_{k + 1}
+  \]
+  Additionally, we have: 
+  \begin{corollary}\label{gcdab}
+    For any $a, b \in \mathbb{Z}^+$, there exist $x, y \in \mathbb{Z}$ such that 
+    \[
+      \gcd(a, b) = xa + yb
+    \]
+  \end{corollary}
+  This is obtained by running Euclid ``up the tree''. 
+  \begin{example}
+    TODO
+  \end{example}
+}
+
+Special consequence of corollary \ref{gcdab} is the following
+\begin{corollary}
+  If $a, b \in \mathbb{Z}^+$ are such that $d = \gcd(a, b)$, then the equation: 
+  \[
+    c = ax + by
+  \]
+  has solutions $(x, y)$ if and only if $\exists \ k > 0: c = kd$, and they can be found as the solutions in corollary \ref{gcdab} multiplied by $k$.
+\end{corollary}
+Final consequence of these facts is the well-known Bézout's theorem.
+\begin{theorem}
+  Two numbers $a, b \in \mathbb{Z}^+$ are relatively prime if and only if the equation
+  \[
+    1 = ax + by
+  \] has integer solutions.
+\end{theorem}
+
+\begin{definition}
+  For any $n \in \mathbb{Z}^+$, Euler's totient function is defined as: 
+  \[
+    \varphi(n) = \big|\big\{k \in \{1, ..., n\}: \gcd(k, n) = 1\big\}\big|
+  \]
+  meaning the number of positive integers less than $n$ that are coprime to it.
+\end{definition}
+\aparte{Properties}{
+  Properties of the totient function include: 
+  \begin{itemize}
+    \item $\varphi(p) = p - 1$ for any prime $p$.
+    \item $\varphi(pq) = (p - 1)(q - 1)$ for any pair of distinct primes $p, q$. 
+    \item More generally, $\varphi(mn) = \varphi(m)\varphi(n)$ for any $m, n$ coprime.
+  \end{itemize}
+}
