@@ -1,0 +1,29 @@
+\chapter{Elliptic curves}
+
+\addcontentsline{toc}{section}{Elliptic curves}
+
+Consider the equation
+\[
+  \Gamma: y^2 = x^3 + ax + b 
+\]
+for rational pairs $(x, y) \in \mathbb{Q}^2$. This is an \emph{elliptic curve}. The set of points on this curve has group structure! We introduce the relation $P + Q = -R$ for three points $P, Q, R$ colinear on the curve. Therefore, the relationships that follow from it are as follows: 
+\begin{enumerate}
+  \item[]] The neutral 0 element is at infinity (when there aren't three intersections with the curve, for example).
+  \item[] $P + 0 = 0 + P = P {\ \forall} P$
+  \item[] $-P$ is the point obtained from $P$ by symmetry wrt. the $x$ axis.
+  \item[] The group operation is therefore defined, in the general case, geometrically: to compute $P + Q$, you draw a line through $P$ and $Q$, and you denote the intersection with the curve $R$. Then, $P + Q := -R$. For edge cases, we have: 
+  \begin{itemize}
+    \item[-] If $P$ and $Q$ are each other's reflection across the $x$ axis, then $P + Q = 0$ (since there's no third intersection with the curve, we take the point at infinity).
+    \item[-] If $P = Q$, then you pick the line tangent to $\Gamma$ at $Q$, find its intersection with $\Gamma$, denoted $2Q$. Then, $Q + Q = -2Q$.
+  \end{itemize}
+\end{enumerate}
+This induces a specific algorithm to factorize a number $n \in \mathbb{N}$. 
+\begin{enumerate}
+  \item Define an elliptic curve $y^2 = x^3 + ax + b$ over $\mathbb{Z}/n\mathbb{Z}$, and pick a point $P = (x_0, y_0)$ on it. 
+  \item Compute $i!P$ up to some integer $k>0$. If we take the example of $3!P$, then we can show the process:
+  \[
+    3!P = 3(2P) = 2 \cdot 2P + 2P
+  \]
+  This involves finding the slopes of tangent lines to the curve, as well as their integer intersections. This so
+
+\end{enumerate}

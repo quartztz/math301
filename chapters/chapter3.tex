@@ -3,6 +3,8 @@
 
 \section{Base definitions}
 
+\subsection{Groups and cosets}
+
 \begin{definition}
   A \emph{group} is a set $G$ with a binary operation $\cdot: G \times G \to G$, satisfying the following axioms: 
   \begin{itemize}
@@ -26,8 +28,6 @@ Since $g^i \cdot g^j = g^{i + j}$ by definition of the group operation, this set
 \begin{definition}
   If it exists, the minimal $n \in \mathbb{N}^*$ such that $g^n = e$ is called the \emph{order} of $g$. It is finite for every element in a finite group. 
 \end{definition}
-
-\section{Cosets}
 
 \begin{definition}
   Let $H\subset G$ be a subgroup of G. The \emph{left coset} of $g$ with respect to $H$, denoted $gH$, is the following set: 
@@ -72,13 +72,13 @@ Since $g^i \cdot g^j = g^{i + j}$ by definition of the group operation, this set
   }
 \end{proof}
 
-\begin{theorem}[Lagrange]
+\begin{theorem}[Lagrange's theorem]
   Let $G$ be a finite group, $H \subset G$ a subgroup. Then, $|H|$ divides $|G|$.
 \end{theorem}
 \begin{proof}
   Each $g \in G$ belongs to a left coset of $H$, which are either disjoint or equal. This means:
   \begin{align*}
-    G &= \bigcup_{i = 0}^{r}x_iH &[\text{disjoint union of finitely many sets}] \\
+    G &= \bigcup_{i = 0}^{r}x_iH &[\text{disjoint union of finite \# of sets}] \\
     \Rightarrow |G| &= \sum_{i = 0}^r |x_iH| &\\
     \Rightarrow |G| &= \sum_{i = 0}^r |H| &[\text{since } |xH| = |H|] \\
     \Rightarrow |G| &= r|H| &
@@ -99,15 +99,15 @@ This means that the order of any element $g \in G$ (notated $\operatorname{ord}(
   $g^{|G|} = (g^{\operatorname{ord}(g)})^{k} = e^k = e$ for some $k$.
 \end{corollary}
 
-\section{RSA}
+\subsection{RSA and back to primes}
 
 \begin{theorem}[Euler's theorem]
-  Let $a, n \in \mathbb{Z}^+$. such that $\gcd(a, n) = 1$. Then, \[ a^{\varphi(n)} \equiv 1 \ \operatorname{mod} n\]
+  Let $a, n \in \mathbb{Z}^+$. such that $\gcd(a, n) = 1$. Then, \[ a^{\tot(n)} \equiv 1 \ \mod n\]
 \end{theorem}
 \begin{proof}
   Consider $G = (\mathbb{Z}/n\mathbb{Z}, \cdot, 1)$. Then, 
   \[
-    a^{\varphi(n)} = a^{|G|} \stackrel{\ref{stupid}}{=} 1
+    a^{\tot(n)} = a^{|G|} \stackrel{\ref{stupid}}{=} 1
   \]
 \end{proof}
 
@@ -115,28 +115,482 @@ This means that the order of any element $g \in G$ (notated $\operatorname{ord}(
   Let $a \in \mathbb{Z}^+$, $p$ prime such that $p$ does not divide $a$. Then, $a^{p - 1} = 1$. 
 \end{theorem}
 \begin{proof}
-  Consider $G = (\mathbb{Z}/p\mathbb{Z}, \cdot, 1)$. Then, $|G| = \varphi(p) = p - 1$. By Euler's theorem, \[a^{\varphi(p)} = a^{(p - 1)} = 1\]
+  Consider $G = (\mathbb{Z}/p\mathbb{Z}, \cdot, 1)$. Then, $|G| = \tot(p) = p - 1$. By Euler's theorem, \[a^{\tot(p)} = a^{(p - 1)} = 1\]
 \end{proof}
 
 \aparte{RSA}{
   The RSA cryptosystem for message transmission works as follows: 
   \begin{enumerate}
     \item Choose two distinct large primes $p, q$. 
-    \item Compute $m = pq \Rightarrow \varphi(m) = (p - 1)(q - 1)$. 
-    \item Choose $e \leqslant m$ an encryption key such that $\gcd(e, \varphi(m)) = 1$. 
-    \item Use Euclid's algorithm to determine $d$ such that $ed - k\varphi(m) = 1$ for some integer $k$.
+    \item Compute $m = pq \Rightarrow \tot(m) = (p - 1)(q - 1)$. 
+    \item Choose $e \leqslant m$ an encryption key such that $\gcd(e, \tot(m)) = 1$. 
+    \item Use Euclid's algorithm to determine $d$ such that $ed - k\tot(m) = 1$ for some integer $k$.
     \item The encoding key is the pair $(m, e)$, and it can be published. To decode, you use the decoding key $(m, d)$ which is to be kept private. 
   \end{enumerate}
 
-  To send a message $x$ to someone, you need their public pair $(m, e)$. You first compute $c \equiv x^e \operatorname{mod} m$, which can be sent publicly. To decode, the person will use their private pair $(m, d)$, computing $x \equiv c^d \operatorname{mod} m \equiv x^{ed} \operatorname{mod} m$.
+  To send a message $x$ to someone, you need their public pair $(m, e)$. You first compute $c \equiv x^e \mod m$, which can be sent publicly. To decode, the person will use their private pair $(m, d)$, computing $x \equiv c^d \mod m \equiv x^{ed} \mod m$.
 }
 
-Why is it the case that $x^{ed} \equiv x \operatorname{mod} m$? Well...
+Why is it the case that $x^{ed} \equiv x \mod m$? Well...
+
+\marginpar{Week 3}
+\begin{theorem}
+  Let $p, q$ be two distinct primes, and $m = pq$. Let $e: \gcd(e, \tot(m)) = 1$, and let $d \in \mathbb{Z}: ed - k\tot(m) = 1$ for some $k \in \mathbb{Z}$. Then, 
+  \[
+    x^{ed} \equiv x \mod m
+  \]
+  for all $x \in \mathbf{m}\}$.
+\end{theorem}
+\begin{proof}
+  If $x = pt$ for some $t$, then trivially $x \equiv x^{ed} \equiv 0 \mod p$. If $x$ is not divisible by $p$, then we can rewrite 
+  \[
+    x^{ed} = x^{k\tot(m) + 1}
+  \]
+  By Fermat's theorem, we know that $x^{p-1} \equiv 1 \mod p$, meaning:
+  \[
+    x^{k\tot(m)} = x^{k(p - 1)(q - 1)} = \big(x^{p - 1}\big)^{k(q - 1)} \equiv 1^{k(q - 1)} \equiv 1 \mod p \Rightarrow x^{k\tot(m) + 1} \equiv x \mod p
+  \]
+  Meaning in both cases $x^{ed} \equiv x \mod p$. By a symmetric argument, the same is true $\mod q$, allowing us to conclude 
+  \begin{align*}
+    x^{ed} - x &\equiv 0 \mod pq \\
+               &\equiv 0 \mod m \\
+    \therefore x^{ed} &\equiv x \mod m
+  \end{align*}
+\end{proof}
+
+\aparte{RSA}{
+  As a quick example, let's consider an RSA system with the following characteristics: 
+  \[
+    p = 3, q = 11 \Rightarrow m = pq = 33, \tot(m) = (p - 1)(q - 1) = 20
+  \]
+  We choose $e = 7$ which is coprime with $\tot(m)$. We compute $d$: 
+  \begin{align*}
+    20 &= 7 \cdot 2 + 6 \\
+    7  &= 6 \cdot 1 + 1 \\
+    \Rightarrow
+    1  &= 7 - 6 \cdot 1 \\
+       &= 7 - (20 - 7 \cdot 2) \cdot 1 \\
+       &= \underbrace{7}_e \cdot \underbrace{3}_d - \underbrace{20}_{\tot(m)}
+  \end{align*}
+}
+
+\section{Homomorphisms}
+
+\subsection{When the morphism is homo D:}
+
+\aparte{Examples}{
+  Recall a few examples of groups:
+
+  \begin{enumerate}
+    \item $\mathbb{Z}/n\mathbb{Z} = \big\{[0], [1], ..., [n - 1]\big\}$ with regular modular addition and 0 as the neutral element. 
+    \item $(\mathbb{Z}/n\mathbb{Z})^* = \{a \in \mathbb{Z}/n\mathbb{Z}: \gcd(a, n) = 1\}$ with modular multiplication and 1 as the neutral element. This is a group because 
+    \begin{gather*}
+      \gcd(a, n) = 1 \Leftrightarrow \exists x, y \in \mathbb{Z}: ax + ny = 1 \\
+      \Rightarrow [a] \cdot [n] = [1] \mod n
+    \end{gather*}
+    
+    These are two abelian!
+
+    \item The $n$-th complex roots of unity! \[\sqrt[n]{1} = \{e^{\frac{2\pi ki}n}, k = 0, ..., n - 1\}\]
+
+    If you define $q = e^{i\frac{2\pi}{n}}$, then the group can be defined as the generated group:
+    \[
+      \sqrt[n]{1} = \langle q \rangle = \{1, q, q^2, ..., q^{n - 1}\} \stackrel{not.}{=} C_n
+    \]
+
+    $C_n$ is defined as \emph{the cyclic group of order $n$}, and it's easy to convince yourself of the fact that $(C_n, \cdot, 1)$ is ``the same'' as $(\mathbb{Z}/n\mathbb{Z}, +, 0)$, in the sense that they have similar enough structure that you could map one onto the other and back.
+  \end{enumerate}
+}
+
+\begin{definition}
+  A map $\phi: G \to H$ between two groups is said to be a \emph{group homomorphism} if 
+  \[
+    \phi(x \cdot_G y) = \phi(x) \cdot_H \phi(y) \ \forall x, y \in G
+  \]
+\end{definition}
+
+This formally defines the ``structure-maintaining'' constraint on $\phi$, and it also implies that $\phi(e_G) = e_H$ and $\phi(x^{-1}) = \phi(x)^{-1}$
+
+\begin{definition}
+  A group homomorphism that can be inverted to a group homomorphism is called a \emph{group isomorphism}. If $\phi: G \to H, \psi: H \to G$ are two group homomorphisms such that $\phi \circ \psi = \operatorname{Id}_H, \psi \circ \phi = \operatorname{Id}_G$, then $G$ and $H$ are said to be \emph{isomorphic groups} (denoted $G \simeq H$).
+\end{definition}
+
+\begin{definition}
+  A \emph{group automorphism} is a group isomorphism from a group onto itself $\phi: G \to G$.
+\end{definition}
+
+\aparte{Example}{
+  The map
+  \begin{align*}
+    \phi: C_n &\to     \mathbb{Z}/n\mathbb{Z} \\
+          q^i &\mapsto [i]
+  \end{align*}
+  is a bijection, with inverse
+  \begin{align*}
+    \phi^{-1}: \mathbb{Z}/n\mathbb{Z} &\to     C_n \\
+               [i]                    &\mapsto q^i
+  \end{align*}
+  and it respects the bounds on the group operations: 
+  \begin{gather*}
+    \phi(q^i \cdot q^j) = \phi(q^{i + j}) = [i + j] \\
+    \phi(q^i) \cdot \phi(q^j) = [i] + [j] = [i + j]
+  \end{gather*}
+  meaning that $C_n \simeq \mathbb{Z}/n\mathbb{Z}$.
+}
+
+\subsection{Generators and Relations}
+
+We've seen that groups can be represented as a set of elements coupled with a binary operation on those elements. However, we can define another representation of a group, based on \emph{generators and relations}: 
+
+\begin{definition}
+  The set of \emph{generators} of a group $G$ is the minimal subset of elements of $G$ such that any element of $G$ can be written as a product of generators and their inverses.
+\end{definition}
+
+
+\begin{definition}
+  A \emph{relation} is an equation that is satisfied by every element of a group. 
+\end{definition}
+  
+\begin{definition}
+  A \emph{presentation of a group $G$ in generators and relations} is an expression of the form : 
+  \[
+    G = \langle S | R\rangle
+  \]
+  With $S$ a set of generators, and $R$ a set of relations on elements of $S$, such that any other relation on $G$ follows from them. 
+\end{definition}
+
+\aparte{Example}{
+  For example, the cyclic group of order $n$, $C_n$, is generated by $q$, since every element can be written as $q^k$ for some $0 < k < n$. Additionally, the relation $q^n = 1$ holds on $q$. This means that we can write:
+  \[
+    C_n = \{1, q^1, ..., q^{n - 1}\} = \langle q | q^n = 1\rangle
+  \]
+}
+
+This representation allows us to define group homomorphisms in an easier way:
+
+\begin{theorem*}
+  Let $G = \langle S | R_1 = 1, ..., R_k = 1 \rangle$, let $H$ a group. We define a mapping $\phi: G \to H$ as follows: 
+  \begin{enumerate}
+    \item[a)] $\phi(s) \in H$ for every generator $s \in S$. 
+    \item[b)] $\phi(x_1 \cdot_G x_2) = \phi(x_1) \cdot_H \phi(x_2)$ for any $x_1, x_2 \in G$.
+  \end{enumerate}
+  Then, $\phi$ is a group homomorphism if and only if $R_1, ..., R_k$ are satisfied for any $\phi(s)$.
+\end{theorem*}
+\marginpar{Week 4}
+\begin{definition}
+  Let $\phi: G \to H$ a group homomorphism. The \emph{kernel} of a group homomorphism is the set 
+  \[
+    \ker \phi = \{g \in G: \phi(g) = e_H\} \subset G
+  \]
+\end{definition}
+
+\begin{theorem*}
+  Let $\phi: G \to H$ a group homomorphism. The kernel of $\phi$ is a subgroup of $G$. 
+\end{theorem*}
+
+\begin{proof}
+  Let $a, b \in \ker \phi$. Then: 
+  \begin{itemize}
+    \item $\phi(e_G) = e_H$ by definition of a group homomorphism, meaning that $e_G\in\phi$. 
+    \item $\phi(a \cdot b) = \phi(a) \cdot \phi(b) = e \cdot e = e$, meaning that $a, b \in \ker \phi \Rightarrow ab \in \ker \phi$. 
+    \item $\phi(a^{-1}) = (\phi(a))^{-1} = e^{-1} = e$, meaning that $a \in \ker \phi \Rightarrow a^{-1} \in \ker \phi$.
+  \end{itemize}
+  These three properties mean that $\ker \phi$ is a subgroup of $G$. 
+\end{proof}
+
+
+\begin{definition}
+  Let $\phi: G \to H$ a group homomorphism. The \emph{image} of $\phi$ is the set $\phi(G) \subset H$.
+\end{definition}
+
+\begin{theorem*}
+  Let $\phi: G \to H$ a group homomorphism. The image $\phi(G) = \{\phi(g)\}_{g \in G} \subset H$ is a subgroup in $H$. 
+\end{theorem*}
+
+\begin{proof}
+  Let $h_1, h_2 \in \phi(G)$. Then
+  \begin{itemize}
+    \item $\phi(e_G) = e_H$ by definition of a group homomorphism, meaning $e_h \in \phi(G)$.
+    \item $h_1 h_2 = \phi(g_1) \cdot \phi(g_2) = \phi(g_1 g_2)$ for some $g_1, g_2 \in G$, meaning $h_1 h_2 \in \phi(G)$.
+    \item $h_1^{-1} = \phi(g_1)^{-1} = \phi(g_1^{-1})$, meaning $h_1^{-1} \in \phi(G)$,
+  \end{itemize}
+  This means $\phi(G)$ is a subgroup of $H$. 
+\end{proof}
+
+\begin{definition}
+  A subgroup $H \subset G$ is a \emph{normal subgroup} (notated $H  \mathrel{\triangleleft} G$) if $\forall h, \forall g$, we have $ghg^{-1} \in H$. 
+\end{definition}
+
+For any group homomorphism $\phi: G \to H$, the kernel $\ker G$ is a normal subgroup of $G$. If you take any $g \in G, h \in H$, then we have: 
+\[
+  \phi(ghg^{-1}) = \phi(g)\phi(h)\phi(g^{-1}) = \phi(g)(\phi(g))^{-1} = e
+\]
+meaning that $ghg^{-1} \in \ker G$ as well. 
+
+\begin{definition}
+  The group of rigid symmetries of a flat regular $n$-gon is called the \emph{dihedral group of order $n$}, and it is denoted $D_n$. 
+\end{definition}
+\aparte{About symmetries}{
+  It is generated by a single rotation counterclockwise, leaving the shape self-similar but with vertices ``shifted'' by one to the left, and one ``mirroring" of the shape per axis of symmetry. 
+
+  For example, for a square, we have: 
+  TODO: ADD IMAGE
+  \[
+    D_4 = \{1, r, r^2, r^3, r^4, s_1, s_2, s_3, s_4\}
+  \]
+  with $r$ a counterclockwise rotation and $s_i$ a reflection across the $i$-th axis. The group operation is concatenation of action: it's easy to see how two consecutive rotations $r$ might yield a double rotation ($r \cdot r = r^2$) and how concatenating a rotation and a symmetry can be defined as $rs_i$
+
+  This is group is not commutative: take a piece of paper, draw a labelled square, and you'll soon convince yourself of the fact that $rs \neq sr$, i.e. that a rotation followed by a mirroring does not yield the same result as the same mirroring followed by the same rotation. 
+
+  In general, $|D_n| = 2n$: due to the nature of our moves, if after a move we have $n$ ``free'' spots where vertex 1 could have ended up, after we choose that one, there's only two spots for vertex 2 (either right before or right after it) before defining a full state for the figure. This means $|D_n| \leqslant 2n$, and since we can lay out $2n$ elements, then $|D_n| = 2n$.
+
+  Playing around with the polygon shows the evident relation $srs = r^{-1}$, equivalent to $(sr)^2 = 1$. With this, we can write: 
+  \begin{align*}
+    D_n 
+    &= \langle r, s | r^n = 1, s^2 = 1, srs = r^{-1} \rangle \\
+    &= \{1, r, r^2, ..., r^{n - 1}, s, sr, sr^2, ..., sr^{n - 1}\}
+  \end{align*}
+  Thanks to our relations, we know that we can write any product of moves under the form $s^ar^b$ for some $a, b$.
+
+  The two subgroups that are worth mentioning are:
+  \begin{itemize}
+    \item the group of rotations $R = \langle r \rangle = \{1, r, ..., r^{n - 1}\}$, which defines two cosets, the coset of rotations $1R$ and the coset of all symmetries $sR = \{s, sr, ..., sr^{n - 1}\}$. 
+    
+    It is a normal subgroup, since $gr^kg^{-1} \in R$ no matter what $g$ you use. 
+    \item the group of symmetries $K = \langle s \rangle = \{1, s\}$. This is not a normal subgroup, as $rsr^{-1} = sr^{-1}r^{-1} = sr^{-2} \notin K$.
+  \end{itemize} 
+}
+
+\section{Weirder groups}
+
+\begin{theorem*}
+  Let $H \mathrel{\triangleleft} G$. We define the product on left cosets of $H$ as 
+  \[
+    (xH) \cdot (yH) = (xyH)
+  \]
+  with $eH$ the neutral element, and $x^{-1}H$ the inverse. This product is well-defined and it induces a group structure on the set of cosets. 
+\end{theorem*}
+\begin{proof}
+  We just have to check that the product does not depend on the choice of coset representatives: let $x' \in xH, y' \in yH$, let us check that $x'y' \in xyH$. We know that $x' = xh_1, y' = yh_2$ for some $h_1, h_2 \in H$. We can write: 
+  \[
+    x'y' = xh_1yh_2 = xy(y^{-1}h_1y)h_2 \stackrel{(*)}{=} xyh_3h_2 = xyh_4 \in xyH
+  \]
+  where step $(*)$ is motivated by the fact that $H$ is normal. Since $x'y' \in xyH$, the product is well defined.
+\end{proof}
+
+\begin{definition}
+  The group of left cosets of $H \mathrel{\triangleleft} G$ is called the the quotient group $G/H$.
+\end{definition}
+
+\aparte{Example}{
+  The cosets of $R \mathrel{\triangleleft} D_n = \{1R, sR\}$ form the quotient group $D_n / R$, with the operations between them being the product of their representatives and the neutral element being the coset of 1 wrt $R$. The operations are
+  \begin{gather*}
+    (1R)(1R) = (1R) \\
+    (1R)(sR) = (sR) \\
+    (sR)(1R) = (sR) \\
+    (sR)(sR) = (1R)
+  \end{gather*}
+  This pattern seems a little familiar: this group is isomorphic to $C_2 = \langle t | t^2 = 1 \rangle$ (which are the two square roots of unity!), with the mapping function
+  \begin{align*}
+    \phi: R/D_n &\to     C_2 \\
+            1R  &\mapsto 1   \\ 
+            sR  &\mapsto t
+  \end{align*}
+}
+
+\begin{theorem*}
+  In an abelian group $G$, every subgroup $H \subset G$ is normal. 
+\end{theorem*}
+
+This is barely a theorem, and is easily proven as $ghg^{-1} = hgg^{-1} = h \in H$ for any $g$. 
+
+\marginpar{Week 5}
+
+\begin{definition}
+  $S_n$ is the group of \emph{permutations of sets of $n$ elements} $\mathbf{n}$. 
+\end{definition}
+
+\aparte{Properties}{
+  A permutation is an element of $S_n$, for which we'll see a few different representations; the group operation is composition between two elements; the neutral element is the trivial permutation that moves no element.
+
+  For an element $s \in S_n$, we denote $si$ the index on which it sends the number $i \in \mathbf{n}$
+
+  In general, $|S_n| = n$\footnotemark.
+}
+
+\footnotetext{This follows from CS101. I didn't pass that class, but I hear it's where we saw it first.}.
+
+We introduce a new notation for elements of $S_n$. In the meantime, let us denote a permutation as two lists: the first is the input one, and the second is the result of applying the permutation once. On $S_4$, the trivial permutation would look like: 
+\[
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 \\
+    1 & 2 & 3 & 4
+  \end{pmatrix}
+\]
+
+Consider an arbitrary element $\rho \in S_n$, of order $k$, and construct $\langle \rho \rangle = \{1, \rho, ..., \rho^{k - 1}\}$. Take $x \in \mathbf{n}$: then we can construct the \emph{orbit} $\Orb_\rho x := \{x, \rho x, ...\}$. This orbit is unique to each $x$: if there were two $x_1, x_2$ such that their orbits aren't disjoint, there would exist $i, j$ such that 
+\begin{gather*}
+  \rho^ix_1 = \rho^jx_2 \Leftrightarrow \rho^{i - j}x_1 = x_2 \Rightarrow x_2 \in \Orb_\rho x_1
+\end{gather*}
+
+This implies that $\Orb_\rho x_2 \subset \Orb_\rho x_1$, and we can find $\Orb_\rho x_1 \subset \Orb_\rho x_2$ pretty symmetrically: this means $\Orb_\rho x_1 = \Orb_\rho x_2$.
+
+\begin{definition}
+  We say that $\pi \in S_n$ is a \emph{cycle} if it has a single non-trivial (containing more than a single element) orbit. The length of this non-trivial orbit is said to be the \emph{length} of the cycle.
+\end{definition}
+
+Therefore, we have that 
+\[
+  \rho = 
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 \\
+    2 & 1 & 3 & 4
+  \end{pmatrix}
+\]
+is a cycle because $\Orb_\rho 1 = \Orb_\rho 2 = \{1, 2\}$ is its only nontrivial orbit, but 
+
+\[
+  \sigma = 
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 \\
+    2 & 1 & 4 & 3
+  \end{pmatrix}
+\]
+isn't because it has two nontrivial orbits, $\Orb_\rho 1 = \Orb_\rho 2 = \{1, 2\}$ and $\Orb_\rho 3 = \Orb_\rho 4 = \{3, 4\}$. A cycle of length $k$, will be notated as such: 
+\[
+  \pi \in S_n : (x, \pi(x), \pi^2(x), ..., \pi^{k - 1}(x))
+\]
+taking $x$ an arbitrary element such that the orbit $\Orb_\pi x$ is nontrivial.
+\[
+  \rho = 
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 \\
+    2 & 1 & 3 & 4
+  \end{pmatrix}
+\]
+would be notated as $\rho = (1 2)$.
+
+This means that the cycle 
+\[
+  (i_1, i_2, ..., i_k)
+\]
+is the permutation that sends $i_1 \mapsto i_2, i_2 \mapsto i_3, ..., i_k \mapsto i_1$, and leaves every other element unchanged.  
+
+\begin{theorem*}
+  Let $S_n$ be the group of permutations on $\mathbf{n}$. Then, disjoint cycles commute in $S_n$ under composition. 
+\end{theorem*}
+\begin{proof}
+  Let $\pi_1, \pi_2$ two disjoint cycles of nontrivial orbits $O_1, O_2$. This means that $O_1 \cap O_2 = \emptyset$. We are looking to prove $\pi_1\pi_2(x) = \pi_2\pi_1(x) \forall x \in \mathbf{n}$. To do that, we split the posisble cases: 
+  \begin{enumerate}
+    \item[1.] $x \notin O_1 \cup O_2$. Then, $\pi_1\pi_2(x) = \pi_2\pi_1(x) = x$ since $x$ feels no action from either. 
+    \item[2.] $x \in O_1 \Rightarrow x \notin O_2$. Then $\pi_1\pi_2(x) = \pi_1(x) = y \in O_1$, and $\pi_2\pi_1(x) = \pi_2(y) = y$. 
+    \item[2.] $x \in O_2 \Rightarrow x \notin O_1$. Using a similar argument, the two expressions are equal.
+  \end{enumerate}
+
+  Therefore, if two cycles in $S_n$ are disjoint, then their product is commutative.
+\end{proof}
+
+\aparte{Method}{
+  Computation of the product of two cycles is done right to left. Consider $(12)$ and $(23)$. We evaluate their product:
+  \[
+    (12)(23)
+  \]
+  \begin{itemize}
+    \item 3 is mapped to 2 by the second cycle, and 2 is mapped to 1 by the first: this means that 3 is mapped to 1. 
+    \item 2 is mapped to 3 by the second cycle, which is left untouched by the first, meaning 2 is mapped to 3. 
+    \item 1 is untouched by the second, and mapped to 2 by the first, meaning 1 is mapped to 2.
+  \end{itemize}
+  We see a single apparent cycle within this mapping, meaning that the result is the nontrivial $(123)$.
+
+  Consider now $(1435)(326)$: we describe it more concisely, but the idea is the same: 
+  \begin{gather*}
+    6 \to 3 \to 5;\ 2 \to 6;\ 3 \to 2; \\
+    5 \to 1;\ 4 \to 3;\ 1 \to 4
+  \end{gather*}
+  We pick any number to start : $(143265)$. 
+
+  Last example: consider $(1435)(321)$. Then, we have: 
+  \begin{gather*}
+    1 \to 3 \to 5;\ 2 \to 1 \to 4;\ 3 \to 2 \\
+    4 \to 3;\ 5 \to 1 
+  \end{gather*}
+  Picking a random start, we try proceeding. If we hit a cycle before we're done, that means that there is still at least a number we haven't hit: we start from it, and keep going. In this case $(15)(243)$.
+}
+
+\begin{theorem}[Unproven\footnotemark]
+  Any permutation $\sigma \in S_n$ can be written as the product of disjoint cycles, uniquely, up to the order of cycles used.
+\end{theorem}
+\footnotetext{Meaning that it will not be proven here. you can find the proof in the teacher's summaries.}
+
+\begin{definition}
+  The notation of $\sigma \in S_n$ as the product of disjoint cycles is called the \emph{cycle notation} of $\sigma$. The lengths of these disjoint cycles is called the \emph{cycle type} of $\sigma$. 
+\end{definition}
+
+\begin{theorem*}
+  The cycle notation for $\pi\rho\pi^{-1}$ can be obtained from the cycle notation for $\rho$ by replacing each $i$ in $\rho$ with $\pi(i)$.
+\end{theorem*}
+\begin{proof}
+  We have $\pi\rho\pi^{-1}(\pi(x)) = \pi\rho\pi^{-1}\pi(x) = \pi\rho(x)$. Now, we suppose $\rho$ is a cycle: 
+  \begin{align*}
+    \rho&: i \to \rho(i)  &\rho:\ &(i, \rho(i), \rho^2(i), ...) \\
+    \pi\rho\pi^{-1}&: \pi(i) \to \pi\rho(i) &\pi\rho\pi^{-1}:\ &(\pi(i), \pi\rho(i), ...)
+  \end{align*}
+\end{proof}
+
+\begin{definition}
+  $s \in S_n$ is a \emph{transposition} if it is a two-cycle, of the form $(ij)$.
+\end{definition}
+\begin{theorem*}
+  Every $k$-cycle can be written as the product of $(k - 1)$ transpositions. 
+\end{theorem*}
+\begin{proof}
+  We prove this by induction:
+  \begin{itemize}
+    \item[] \textbf{Base:} $k = 2$ is trivial, $k = 3$ is unpacked easily as $(123) = (13)(12)$. 
+    \item[] \textbf{Induction:} Suppose $(123...k) = (1k)...(13)(12)$. We consider : 
+    \[
+      (1\ k + 1)(123...k) \stackrel{(1)}{=} (123...k\ k + 1) \stackrel{(2)}{=} (1k)...(13)(12)
+    \]
+    where we obtain $(1)$ by direct computation of the product and $(2)$ by direct application of the induction hypothesis.
+  \end{itemize}
+\end{proof}
+
+As a direct result of this, we can say that $S_n$ is generated by the transpositions $\{(ij)\}_{i < j}$: since every permutation is the product of disjoint cycles, and every cycle is the product of transpositions, then every permutation is the product of transpositions, which might not be disjoint.
 
 \begin{theorem}
-  Let $p, q$ be two distinct primes, and $m = pq$. Let $e: \gcd(e, \varphi(m)) = 1$, and let $d \in \mathbb{Z}: ed - k\varphi(m) = 1$ for some $k \in \mathbb{Z}$. Then, 
-  \[
-    x^{ed} \equiv x \operatorname{mod} m
-  \]
-  for all $x \in \{1, ..., m\}$.
+  The product of an odd number of transposition cannot be equal to the product of an even number of transpositions.
 \end{theorem}
+\begin{proof}
+  The proof of this can be found by considering the number of inversions present after a given permutation. Consider the state after the permutation $\sigma$ as: 
+  \[
+    s_1s_2...im_1m_2...m_k...ke_1e_2...
+  \]
+  Now, consider $(ij)\sigma$ and any $m_k$. 
+  \begin{itemize}
+    \item If $i < m_k, j < m_k$ or $m_k < i, m_k < j$, then swapping $i$ and $j$ does not contribute to the amount of inversions $\Rightarrow \pm 0$ inversions; 
+    \item If $i < m_k < j$ or $j < m_k < i$, then swapping $i$ and $j$ changes the inversion state between $i$ and $m_k$, and between $m_k$ and $j$ $\Rightarrow \pm 2$ inversions.
+  \end{itemize}
+  Additionally, since $i \neq j$, swapping them adds or removes an inversion, as well, in such a way that in total, an additional transposition changes the number of inversions by 1. 
+
+  Therefore, it is impossible to obtain the same number with $2k$ and $2k' + 1$ transpositions, no matter the values of $k, k' \in \mathbb{N}$. 
+\end{proof}
+\marginpar{Week 6}
+\begin{definition}
+  We use the number of inversions in a given permutation to define its \emph{sign} as 
+  \[
+    \sgn{\sigma} = (-1)^{\operatorname{inv}\sigma} = \begin{cases}
+      1 &, \sigma \text{ has an even number of inversions} \\
+      -1 &, \sigma \text{ has an odd number of inversions}
+    \end{cases}
+  \]
+\end{definition}
+
+This can easily be shown to verify $\sgn(\sigma\tau) = \sgn(\sigma)\sgn(\tau)$...: $\sgn: S_n \to \{0, 1\}$ is a group homomorphism! Recalling that the kernel of an homomorphism is a subgroup, we get that 
+\[
+  A_n = \ker\sgn \mathrel{\triangleleft} S_n = \{\sigma \in S_n : \operatorname{inv}\sigma \text{ is even}\}
+\]
+$A_n$ is called the \emph{alternating group}, and it is of size $n! / 2$ (can be shown by Lagrange.)
+
+\begin{theorem*}
+  
+\end{theorem*}

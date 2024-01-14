@@ -1,4 +1,6 @@
-\documentclass{report}
+\documentclass{report} % can be changed to article 
+
+% imports
 
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -6,10 +8,12 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage[normalem]{ulem}
-\usepackage[margin=1.5in]{geometry}
+\usepackage[margin=1.5in]{geometry} % margin can be changed
 \usepackage{changepage}
 \usepackage{mdframed}
 \usepackage{xcolor}
+
+% environments
 
 \newmdenv[
   topline=false,
@@ -18,23 +22,6 @@
   skipabove=\topsep,
   skipbelow=\topsep
 ]{siderules}
-
-\def\labelitemi{\ensuremath{\triangleright}}
-\definecolor{blueish}{RGB}{80, 150, 150}
-\renewcommand{\emph}[1]{{\color{blueish} #1}}
-
-\newtheorem*{theorem*}{Theorem}
-\newtheorem{example}{Example}
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-
-\newcommand{\sep}{
-  \begin{center}
-    \noindent\rule{0.35\textwidth}{0.5pt}
-  \end{center}
-}
-
 \newcommand{\aparte}[2]{
   \vspace{0.5em}
   \begin{adjustwidth}{24pt}{0pt}
@@ -42,7 +29,37 @@
       \leavevmode\reversemarginpar{\raggedleft \textit{#1}} #2
     \end{siderules}
   \end{adjustwidth}
-  \vspace{0.75em}}
+  \vspace{0.75em}
+}
+\newcommand{\sep}{
+  \begin{center}
+    \noindent\rule{0.35\textwidth}{0.5pt}
+  \end{center}
+}
+
+% configs
+
+\def\labelitemi{\ensuremath{\triangleright}}
+\definecolor{blueish}{RGB}{80, 150, 150}
+\renewcommand{\emph}[1]{{\color{blueish} #1}}
+
+% specific algebra stuff
+
+\AtBeginEnvironment{pmatrix}{\setlength{\arraycolsep}{3pt}}
+
+\newcommand{\tot}{\ensuremath\varphi}
+\newcommand{\Orb}{\ensuremath\operatorname{Orb}}
+\newcommand{\sgn}{\ensuremath\operatorname{sgn}}
+\renewcommand{\mod}{\ensuremath\operatorname{mod}}
+\renewcommand{\emptyset}{\varnothing}
+
+% specific maths stuff
+\newtheorem*{theorem*}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+
     
 \title{Algebra - MATH310}
 \author{Jacopo ``quartztz'' Moretti}
@@ -54,7 +71,13 @@
   \chapter*{Preface}
   Helo! I'm Jack :3.
 
-  I'm a student that need sto type out courses in order to make sure they properly understand them. So I put them out into the world! They might help you more than they help me :D. They are given as they are, with no guarantee of quality but guarantee of goodwill, bla bla bla. You know the gist of it. 
+  I'm a student that needs zto type out courses in order to make sure they properly understand them. So I put them out into the world! They might help you more than they help me :D. They are given as they are, with no guarantee of quality but guarantee of goodwill, bla bla bla. You know the gist of it. 
+
+  \section*{Elements of notation}
+
+  The group operation for a group $G$ will usually be denoted $\cdot_G$, and its neutral element will be $e_G$. The index will be removed when it can be inferred from context. 
+
+  For now, I'll denote $\mathbf{n} = \{1, ..., n\}$, because it's clunky to type and it's my notes, goddamnit. I might change it back at the end.
 
   \tableofcontents
 
@@ -69,4 +92,5 @@
   \appendix
   
   \input{chapters/appendixA.tex}
+  \input{chapters/appendixB.tex}
 \end{document}
