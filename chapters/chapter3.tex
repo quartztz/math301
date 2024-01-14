@@ -73,7 +73,7 @@ Since $g^i \cdot g^j = g^{i + j}$ by definition of the group operation, this set
 \end{proof}
 
 \begin{theorem}[Lagrange's theorem]
-  Let $G$ be a finite group, $H \subset G$ a subgroup. Then, $|H|$ divides $|G|$.
+Let $G$ be a finite group, $H \subset G$ a subgroup. Then, $|H|$ divides $|G|$.
 \end{theorem}
 \begin{proof}
   Each $g \in G$ belongs to a left coset of $H$, which are either disjoint or equal. This means:
@@ -592,5 +592,133 @@ This can easily be shown to verify $\sgn(\sigma\tau) = \sgn(\sigma)\sgn(\tau)$..
 $A_n$ is called the \emph{alternating group}, and it is of size $n! / 2$ (can be shown by Lagrange.)
 
 \begin{theorem*}
-  
+  Let $g, h \in S_n$, consider $ghg^{-1} \in S_n$. If $h$ is the product of disjoint cycles of lengths $\{l_1, l_2, ..., l_n\}$, then $ghg^{-1}$ is the product of disjoint cycles of same length set. 
+  Therefore, any element that is the product of disjoint cycles of given lengths can be obtained from another of same lengths by conjugation with another element.
 \end{theorem*}
+\begin{proof}
+  Let us consider a single cycle $\rho_{l}$ of length $l$. Then, we have that 
+  \[
+    \rho_l = (i_1i_2...i_l) \Rightarrow g\rho_{l}g^{-1} = (g(i_1)...g(i_l))
+  \]
+  is a cycle of the same length! This being said, we consider $h$ as the product of disjoint cycles, with their relative lengths: 
+  \[
+    h = \rho_{l_1}...\rho_{l_r}\Rightarrow ghg^{-1} = (g\rho_{l_1}g^{-1})...(g\rho_{l_r}g^{-1}) = \gamma_{l_1}...\gamma{l_r}
+  \]
+  where we introduce neutral elements in the product under the form $e = gg^{-1}$. Therefore, we see here that the action is obtained by mapping every element in every cycle of $h$ to the corresponding element in the new cycles $\gamma$. 
+\end{proof}
+
+We can use conjugates to define classes: 
+\begin{definition}
+  The \emph{conjugacy class} of $h$, $\{ghg^{-1}\}_{g \in S_n}$ is the set of all elements conjugated to $h$ in $S_n$. More informally, as we've seen, it's the set of all elements that have the same cycle type as $h$.
+\end{definition}
+
+\aparte{Conclusion}{
+  This allows us to more formally define the idea that $S_n$ is the disjoint union of the classes of elements that have same cycle type. These conjugacy classes are in bijection with the partitions of the integer $n$, of the form: 
+  \[
+    \{\{i_1, ..., i_k\} : n = i_1 + ... + i_k, i_1 \geqslant ... \geqslant i_k\}
+  \]
+  with $\{i_1, ..., i_k\}$ corresponding to the cycle lengths of the elements in the class. For example, take the partitions of the number 4, matched with the corresponding elements in $S_4$: 
+  \begin{gather*}
+    \{4\} \to \{(1234), (2143), ...\}\\
+    \{3, 1\} \to \{(123), (234), ...\}\\
+    \{2, 2\} \to \{(12)(34), (24)(13), ...\}\\
+    \{2, 1, 1\} \to \{(12), (13), (32), ...\}\\ 
+    \{1, 1, 1, 1\} \to \{e\}
+  \end{gather*}
+}
+
+\section{Actions of groups on sets}
+\subsection{Orbits and stabilizers}
+\begin{definition}
+  Let a finite group $G$, and a finite set $E$. We say that $G$ \emph{acts on $E$ by permutations} if one can define the product $g \cdot x$ for any $g \in G, x \in E$ in such a way that
+  \begin{gather*}
+    e \cdot x = x\ \forall x \in E \\
+    g_1g_2 \cdot x = g_1 \cdot (g_2 \cdot x) \ \forall g_1, g_2 \in G, x \in E
+  \end{gather*}
+
+  We also define the \emph{orbit} of $x \in E$ under the action of $G$ as the subset \[\Orb_x = \{g \cdot x\}_{g \in G} \subset E\]
+\end{definition}
+
+\begin{theorem*}\label{disjointorb}
+  Let $E$ a finite set, $x, y \in E$, $G$ a finite group. Then, 
+  \[
+    \Orb_x = \Orb_y \text{ ou } \Orb_x \cap \Orb_y = \emptyset
+  \]
+\end{theorem*}
+\aparte{}{
+  Proof of this was done in an exercice set, and can be found in the appendix. 
+}
+
+Since every element of $E$ belongs to some orbit (at the very least $\Orb_x$), we can write 
+\[
+  E = \bigcup_{i = 0}^{k} \Orb_{x_i}
+\]
+with a set of orbit representatives $\{x_i\}_{i = 0}^k$. If we consider the case of $G$ acting on itself by conjugation, then the orbit of $h$ in $G$ is the conjugacy class $C_h = \{ghg^{-1}\}_{g \in G}$. This yields, similarly, 
+\[
+  G = \bigcup_{i = 0}^k C_{h_i}
+\]
+which is not very interesting group for an abelian group as $C_h = {ghg^{-1}}_{g \in G} = \{gg^{-1}h\}_{g \in G} = \{h\}$, meaning they are all disjoint as they contain a single element.
+
+\begin{definition}
+  Let $G, E$ be a finite group and a finite set, respectively, such that $G$ acts on $E$. The \emph{stabilizer} of $x$ is the set: 
+  \[
+    \Stab_x = \{g \in G: g \cdot x = x\}
+  \]
+  It is a subgroup of $G$. 
+\end{definition}
+
+\begin{theorem}[Orbit-Stabilizer Theorem]
+  Let $G$ be a finite group acting on $E$ a finite set, let $x \in E$. Then, 
+  \[
+    |\Orb_x| = [G : \Stab_x] = |G|/|\Stab_x|
+  \]
+\end{theorem}
+\begin{proof}
+  Consider the left cosets with respect to $H = \Stab_x$. We have a bijection $\mu$ between ${gH}_{g \in G}$ and $\Orb_x$. We define it as: 
+  \[
+    \mu: gH \mapsto g \cdot x
+  \]
+  This mapping is surjective, because every $g$ appears in a left coset of $H$. To prove it is injective, we consider two $g, f$ such that $\mu(gH) = \mu(fH) \in Orb_x$: 
+  \[
+    g \cdot x = f \cdot x \Rightarrow f^{-1} g \cdot x = x \Rightarrow f^{-1}g \in \Stab_x \Rightarrow f^{-1}gH \subset H 
+  \]
+  This means $gH \subset fH$. Symmetrically, we establish $fH \subset gH$, meaning $fH = gH$. This implies $\mu$ is injective, meaning that the number of left cosets of $H$ is the same as the number of elements in the orbit of $x$. Using the formula for the number of left cosets, we get
+  \[
+    |Orb_x| = \# \text{ of left $H$-cosets} = [G : H] = [G : \Stab_x]
+  \]
+\end{proof}
+
+\begin{definition}
+  The \emph{center} of a group is the set of all elements that commute with every $g \in G$: 
+  \begin{align*}
+    Z(G) 
+    &= \{x \in G: g \cdot x = x \cdot g \ \forall g \in G\} \\
+    &= \{x \in G: g \cdot x \cdot g^{-1} = x\ \forall g \in G\}
+  \end{align*}
+  It is also the set of all 1-element conjugacy classes of $G$. 
+\end{definition}
+\begin{theorem}
+  Using the center, we define the \emph{class equation of $G$}, for a finite group $G$: 
+  \[
+    |G| = |Z(G)| + \sum_{i = 0}^rC_{x_i} = |Z(G)| + \sum_{i = 0}^{r} [G:G_{x_i}]
+  \]
+  Where $G_{x_i}$ is the stabilizer of $x_i$ with respect to conjugation. 
+\end{theorem}
+\begin{proof}
+  We know that $G$ is the disjoint union of its conjugacy classes
+  \begin{gather*}
+    |G| = \sum_{i = 0}^m |C_{x_i}| = \underbrace{\sum_{i = 0}^r |C_{x_i}|}_{\text{conj. cl. of size } 1} + \underbrace{\sum_{j = 0}^s |C_{x_j}|}_{\text{conj. cl. of size } \neq 1} \\
+    \Rightarrow |G| = |Z(G)| + \sum_{j = 0}^s |C_{x_j}| = |Z(G)| + \sum_{j = 0}^s |[G:G_{x_i}]|
+  \end{gather*}
+  Since the size of the conjugacy class is the number of left cosets of stabilizer subgroup. 
+\end{proof}
+
+\aparte{Application}{
+  A group of order $p^n$ with $p$ prime has nontrivial center. 
+  \begin{proof}
+    \[
+      |G| = |Z(G)| + \sum_{j = 0}^s |[G:G_{x_i}]|
+    \]
+    where $|G| = p^n$, which is divisible by $p$, and $[G:G_{x_i}] = |G|/|G_{x_i} = p^n/|G_{x_i}| > 1$, meaning it is divisible by $p$ as well. This implies $|Z(G)|$ is also divisible by $p$, and since it contains $e$, it cannot be 0. Therefore, it has to be a nontrivial multiple of $p$.
+  \end{proof}
+}
