@@ -3,4 +3,5 @@
 *.fls
 *.toc
 *.log
+*.out
 *.synctex*

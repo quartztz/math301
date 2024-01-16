@@ -23,6 +23,7 @@
   skipabove=\topsep,
   skipbelow=\topsep
 ]{siderules}
+
 \newcommand{\aparte}[2]{
   \vspace{0.5em}
   \begin{adjustwidth}{24pt}{0pt}
@@ -32,6 +33,7 @@
   \end{adjustwidth}
   \vspace{0.75em}
 }
+
 \newcommand{\sep}{
   \begin{center}
     \noindent\rule{0.35\textwidth}{0.5pt}
@@ -41,6 +43,7 @@
 % configs
 
 \def\labelitemi{\ensuremath{\triangleright}}
+\renewcommand{\theenumi}{\small {(\roman{enumi})}}
 \definecolor{blueish}{RGB}{80, 150, 150}
 \renewcommand{\emph}[1]{{\color{blueish} #1}}
 
@@ -49,9 +52,12 @@
 \AtBeginEnvironment{pmatrix}{\setlength{\arraycolsep}{3pt}}
 
 \newcommand{\tot}{\ensuremath\varphi}
+\newcommand{\gen}[1]{\ensuremath\langle #1 \rangle}
 \newcommand{\Orb}{\ensuremath\operatorname{Orb}}
 \newcommand{\Stab}{\ensuremath\operatorname{Stab}}
 \newcommand{\sgn}{\ensuremath\operatorname{sgn}}
+\newcommand{\ord}{\ensuremath\operatorname{ord}}
+\newcommand{\lcm}{\ensuremath\operatorname{lcm}}
 \renewcommand{\mod}{\ensuremath\operatorname{mod}}
 \renewcommand{\emptyset}{\varnothing}
 
@@ -62,7 +68,6 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 
-    
 \title{Algebra - MATH310}
 \author{Jacopo ``quartztz'' Moretti}
 \date{January 2024}
