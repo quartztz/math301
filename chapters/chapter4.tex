@@ -1,0 +1,201 @@
+\chapter{Rings and fields}
+
+\section{F*!king finally!}
+
+\begin{definition}
+  A \emph{ring} is a set $A$ with two operations defined on it: $+$ and $\cdot$, in such a way that
+  \begin{enumerate}
+    \item $A$ is an abelian group with respect to $+$, containing a neutral element $0$. 
+    \item $\cdot$ is associative: $(a \cdot b) \cdot c = a \cdot (b \cdot c)$, et il $\exists 1 \in A: 1 \cdot a = a \cdot 1$.
+    \item  $\cdot$ is both left- and right-distributive over $+$: $a \cdot (b + c) = ab + ac,  (a + b) \cdot c = ac + bc$. 
+  \end{enumerate}
+\end{definition}
+\aparte{Examples}{
+  Let us consider some examples: 
+  \begin{itemize}
+    \item $\mathbb{Z}: \gen{+, \cdot, 0, 1}$ is a ring! Though it doesn't contain any multiplicative inverses, it fits the definitions nicely. 
+    \item $A = \mathbb{Z}[\sqrt{2}] := \{a + b\sqrt{2}, a, b \in \mathbb{Z}\}$ contains 0 and 1. Additionally: 
+    \begin{gather*}
+      (a + b\sqrt{2}) + (c + d \sqrt{2}) = (a + c) + (b + d)\sqrt{2} \in A\\
+      -a - b\sqrt{2} \in A \\
+      (a + b\sqrt{2})(c + d\sqrt{2}) = ac + 2bd + \sqrt{2}(ad + bc) \in A \\
+    \end{gather*}
+    \item $\mathbb{Q}[\sqrt{2}]$ is a ring. Proof of this is left as an exercice to the reader. 
+  \end{itemize}
+}
+
+In this course, we will consider only \emph{commutative rings}, such that $ab = ba \forall a, b \in A$. 
+
+\begin{definition}
+  $a \in A$ is a \emph{zero divisor} if there exists an $0 \neq x \in A$ such that $ax = 0$. 
+\end{definition}
+Most rings we are used to do not have any nontrivial zero divisors. Let us consider another one: 
+\aparte{Example}{
+  Consider: 
+  \[
+    \mathbb{Z}/n\mathbb{Z} = \{[0], [1], ..., [n - 1]\}
+  \]
+  It is isomorphic to the cyclic group of order $n$, meaning it is an abelian group with respect to addition. $\cdot$ is associative, and $[1]$ is its neutral element wrt multiplication. 
+
+  Consider now an element $[a] \in \mathbb{Z}/n\mathbb{Z}$. 
+  \begin{itemize}
+    \item If $\gcd(a, n) = d > 1$, then we can write \[[a] \cdot \left[\frac{n}{d}\right] = [1]\] meaning that $a$ is a nontrivial zero divisor of the ring. 
+    \item If $a, n$ are coprime, then by Bezout's theorem 
+    \begin{gather*}
+      \exists x, y : ax + ny = 1 \Rightarrow [a][x] = [1] \Rightarrow [a]^{-1} = [x]
+    \end{gather*}
+    Additionally, if we consider $[b]: [b] \cdot [a] = 0$, then we have
+    \[
+      [b] \cdot [a] = [0] \Rightarrow [b] \cdot [a] \cdot [x] = [0] \Rightarrow [b] \cdot [1] = [0] \Rightarrow [b] = [0]
+    \]
+    Meaning that $[a]$ cannot be a zero divisor of the ring. 
+  \end{itemize}
+  This means that an element of $\mathbb{Z}/n\mathbb{Z}$ is either invertible, or a zero divisor. 
+}
+
+\begin{definition}
+  A ring that has no nontrivial zero divisors is called an \emph{integral domain}.
+\end{definition}
+\begin{definition}
+  A commutative ring where all nonzero elements have a multiplicative inverse is called a \emph{field}. $\forall 0 \neq a \in A \exists a^{-1} \in A : a a^{-1} = a^{-1} a = 1$
+\end{definition}
+\begin{corollary}
+  $\mathbb{Z}/n\mathbb{Z}$ either has nontrivial zero divisors ($\Leftrightarrow n$ is not prime) or it is a field and an integral domain ($\Leftrightarrow n = p$ for some prime $p$). 
+\end{corollary}
+\begin{proof}
+  If it has no nontrivial zero divisors, that means that there is no $[a] \in \{[1], ..., [n - 1]\}$ such that $\gcd(a, n) > 1$. Therefore, $n$ has no divisors other than itself and 1, and it must be a prime $p$ by definition. If that's the case, then $\forall [b] \neq 0, \gcd(b, p) = 1 \Rightarrow [b]$ has a multiplicative inverse, meaning that $\mathbb{Z}/n\mathbb{Z}$ is a field.
+\end{proof}
+
+\begin{theorem*}
+  A field is an integral domain. An invertible element is not a zero divisor. 
+\end{theorem*}
+\begin{proof}
+  Suppose $ab = 0$ in a field $A$ such that $a \neq 0$. This means that there exists a $a^{-1} \in A$ such that $aa^{-1} = 1$. This means that :
+  \begin{align}
+    ab = 0 
+    &\Leftrightarrow a^{-1}ab = a^{-1} \cdot 0 \\
+    &\Leftrightarrow 1 \cdot b = 0 \\
+    &\Leftrightarrow b = 0
+  \end{align}
+  meaning $a$ cannot be a zero divisor. This means that if all non-zero elements in $A$ are invertible, then $A$ cannot have nontrivial zero divisors. This is equivalent to saying that if $A$ is a field, then it is an integral domain, proving our proposition.
+\end{proof}
+\aparte{Remark}{The converse isn't true! $\mathbb{Z}$ is an integral domain, but $2 \in \mathbb{Z}$ does not have a multiplicative inverse.}
+
+This allows the following characterization: 
+\[
+  \text{Fields} \subset \text{Integral Domains} \subset \text{Commutative Rings}
+\]
+And for the following statements on $\mathbb{Z}/n\mathbb{Z}$ : 
+\[
+  \mathbb{Z}/n\mathbb{Z} \text{ integral domain} \Leftrightarrow \mathbb{Z}/n\mathbb{Z} \text{ field} \Leftrightarrow n = p \text{ prime}
+\]
+
+\section{Less than ideal}
+
+\begin{definition}
+  Let $A$ be a commutative ring. $I \subset A$ is an \emph{ideal} if it has the following properties:
+  \begin{itemize}
+    \item it is a subgroup with respect to +, i.e: it contains 0, $-a$ for any $a \in I$, and it is closed wrt +. 
+    \item $\forall x \in A, a \in I: x \cdot a \in I$. 
+  \end{itemize}
+\end{definition}
+\aparte{Examples}{
+  Let's have a look at some examples
+  \begin{itemize}
+    \item $\{0\} \subset A, A \subset A$ are ideals for any commutative ring $A$. That is not very interesting.
+    \item Consider $\mathbb{Z}$. Then, $2\mathbb{Z} = \{2a, a \in \mathbb{Z}\}$ is an ideal! It's easy to verify it is a subgroup for $+$, and we have that, for any $x \in \mathbb{Z}, 2a \cdot x \in 2\mathbb{Z}$. This is true for any $d \in \mathbb{Z}$. 
+  \end{itemize}
+}
+
+\begin{definition}
+  We say that an ideal $I \subset A$ is \emph{proper} if $I \neq A$, and \emph {nontrivial} if $I \neq 0$. 
+\end{definition}
+\aparte{Properties}{
+  Let $I, J \subset A$ two ideals. Then: 
+  \begin{enumerate}
+    \item[(i)] if $1 \in I$, then $I = A$. 
+    
+    \textit{This is due to the properties of ideals: $\forall x \in A, 1 \cdot x \in I \Rightarrow x \in I \Rightarrow I = A$}
+    
+    \item[(ii)] $I \cap J$ is an ideal
+
+    \textit{Again, easy to verify applying properties of ideals: let $x, y \in I \cap J$.}
+    \begin{gather*}
+      x + y \in I, J \Rightarrow x + y \in I \cap J \\
+      -x \in I, J \Rightarrow -x \in I \cap J \\
+      0 \in I, J \Rightarrow 0 \in I \cap J
+    \end{gather*}
+    \textit{Meaning it is a subgroup. Also, for any $a \in A$, we have that $ax \in I, ax \in J$, which means $ax \in I \cap J$. This makes it an ideal!}
+
+    \item[(iii)] $I + J = \{i + j\}_{i \in I, j \in J}$ is an ideal.
+
+    \item[(iv)] $I \cdot J = \{\sum_{i = 1}^k x_i y_i\}_{x_i \in I, y_i \in J}$ is an ideal.\footnotemark
+
+    \item[(v)] $I \cup J$ is not necessarily an ideal
+
+    \textit{More often than not, it is not an additive subgroup: consider $I = 2\mathbb{Z}$, $J = 3\mathbb{Z}$}
+  \end{enumerate}
+}
+\footnotetext{Proofs to (iii) and (iv) are left as exercice to the reader, as they are similar to that of (ii).}
+
+\aparte{Examples}{
+  We can verify some fun properties on integer ideals. Let $A = \mathbb{Z}, I = 6\mathbb{Z}, J = 10\mathbb{Z}$. Then: 
+  \begin{itemize}
+    \item \textbf{Intersection:} We have: 
+    \begin{align*}
+      I \cap J 
+      &= \{z \in \mathbb{Z}: z = 6n \land z = 10m, n, m \in \mathbb{Z}\} \\
+      &= \{\text{common multiples of 6 and 10}\} \\
+      &= \{\text{all multiples of} \lcm(6, 10) = 30\} \\
+      &= 30\mathbb{Z}
+    \end{align*}
+    \item \textbf{Addition:} We have: 
+    \begin{align*}
+      I + J 
+      &= \{6n + 10m\}_{n, m \in \mathbb{Z}} \\
+      &= \{\gcd(6, 10)k, k \in \mathbb{Z}\} \tag*{\text{[By Bezout]}} \\
+      &= 2\mathbb{Z}
+    \end{align*}
+    \item \textbf{Product:} We have: 
+    \begin{align*}
+      I \cdot J 
+      &= \left\{\sum_{i = 1}^k 6x_i \cdot 10y_i, x_i, y_i \in \mathbb{Z}\right\} \\
+      &= \left\{ 60\sum_{i = 1}^k x_iy_i,  x_i, y_i \in \mathbb{Z} \right\} \\
+      &= 60\mathbb{Z}
+    \end{align*}
+  \end{itemize}
+
+  From which we can conclude!
+  
+  \ 
+
+  \begin{unnumthm}
+    Let $I = n\mathbb{Z}, J = m\mathbb{Z}$ two ideals of $\mathbb{Z}$. Then: 
+    \begin{gather*}
+      I \cap J = \lcm(n, m)\mathbb{Z} \\
+      I + J = \gcd(n, m)\mathbb{Z} \\
+      I \cdot J = (n \cdot m)\mathbb{Z}
+    \end{gather*}
+  \end{unnumthm}
+}
+
+\aparte{Example}{
+  Consider $A = \mathbb{R}[x]$ all polynomials on one variable with real coefficients\footnotemark. This forms a ring as is trivial to verify. Then, we consider the following: 
+  \begin{gather*}
+    I = \{(x + 5)f(x), f(x) \in \mathbb{R}[x]\} \\
+    J = \{(x^2 + 2)f(x), f(x) \in \mathbb{R}[x]\}
+  \end{gather*}
+  which are comprised of all polynomials divisible by $(x + 5)$ and $(x^2 + 2)$, respectively. Then, we have:
+  \begin{gather*}
+    I \cap J = \{(x + 5)(x^2 + 2)f(x), f(x) \in \mathbb{R}[x]\} \\
+    I \cdot J = \left\{\sum_{i = 0}^k (x + 5)f_i(x) \cdot (x^2 + 2)g_i(x)\right\} = \{(x + 5)(x^2 + 2)f(x)\} \\
+    I + J = \{(x + 5) f(x) + (x^2 + 2) g(x)\}
+  \end{gather*}
+  We can find $f(x), g(x)$ such that $(x + 5) f(x) + (x^2 + 2) g(x) = 1 \in \mathbb{R}[x]$ (constant polynomial of value 1). For example, take 
+  \[
+    (x + 5)(x - 5)\left(\frac{-1}{27}\right) - (x^2 + 2)\left(\frac{-1}{27}\right) = (x^2 - 25 - x^2 - 2)\left(\frac{-1}{27}\right) = 1
+  \]
+
+  Can we do that for any pair of polynomials in $\mathbb{R}[x]$?
+}
+\footnotetext{If you want to see me get pedantic about notation for life half a page, go look at appendix C.}
