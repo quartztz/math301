@@ -169,14 +169,14 @@ From which we can conclude!
 
 \ 
 
-\begin{unnumthm}
+\begin{theorem}\label{idealops}
   Let $I = n\mathbb{Z}, J = m\mathbb{Z}$ two ideals of $\mathbb{Z}$. Then: 
   \begin{gather*}
     I \cap J = \lcm(n, m)\mathbb{Z} \\
     I + J = \gcd(n, m)\mathbb{Z} \\
     I \cdot J = (n \cdot m)\mathbb{Z}
   \end{gather*}
-\end{unnumthm}
+\end{theorem}
 
 \aparte{Example}{
   Consider $A = \mathbb{R}[x]$ all polynomials on one variable with real coefficients\footnotemark. This forms a ring as is trivial to verify. Then, we consider the following: 
@@ -423,4 +423,169 @@ This holds for fields as well, since they are integral domains necessarily.
   Let $D = \mathbb{Z}/n\mathbb{Z}[x]$ be the ring of polynomials over $x$ with coefficients in $\mathbb{Z}/n\mathbb{Z}$. The homomorphism must be such that $\tau(1) = [1]_n$, meaning that $\tau(k) = [k]_n = 0 \Leftrightarrow n|k$. This means that $\ker \tau = (n)$, meaning that $c_D = n$. 
 }
 
+\section{The Chinese Remainder Theorem}
 \marginpar{Week 10}
+
+\begin{theorem}[Chinese Remainder Theorem]
+  Let $A$ be a commutative ring, $I, J \subset A$ two ideals such that $I + J = A$. Then, there exists a ring isomorphism\footnotemark 
+  \begin{align*}
+    f: A/(I \cap J)      &\stackrel{\sim}{\to} A/I \times A/J \\
+       f([x]_{I \cap J}) &\mapsto ([x]_I, [x]_J)
+  \end{align*}
+\end{theorem}
+\footnotetext{A ring isomorphism is a ring homomorphism that is bijective (inversible).}
+\begin{proof}
+  We will first prove that $f$ is a homomorphism, before proving its bijectivity. 
+  \begin{enumerate}
+    \item[\small(1)] $f$ is a ring homomorphism. This can be shown by checking ring operations on it, which is easy and tedious after pointing out that we map $1$ to $([1]_I, [1]_J)$. 
+    \item[\small(2)] We want to show that $f$ is surjective by showing that for any $a_1, a_2 \in A$, there exists an $a \in A$ such that $a \equiv a_1 (\mod I)$ and $a \equiv a_2 (\mod J)$. Since $I + J = A$, then we can write, for $i \in I, j \in J$: 
+    \[
+      a_1 - a_2 = -i + j \Leftrightarrow a_1 + i = a_2 + j := a \in A
+    \]
+    which by construction gives us an $a \in A$ with the properties we want. This implies that for any $x \in A$, we can define $f(x) = ([x]_I, [x]_J)$, which is surjective. 
+    \item[\small(3)] To prove that $f$ is injective, We consider another $b$ such that $b \equiv a_1 (\mod I) \equiv a_2 (\mod J)$. Then, there exist $i', j'$ such that $b = a_1 + i' = a_2 + j'$, meaning $b - a = i - i' = j - j' \in I \cap J$. This is means that it has reminder 0 in $A$\footnote{This is handwavy, but I mean. It's not any less clear than the proof in the course, and it's the best explanation I've found. I'll update the document once I find better.}, meaning that our map is injective. 
+  \end{enumerate}
+  Therefore, $f$ is surjective and injective: therefore, is a bijective ring homomorphism, and by definition is a ring isomorphism.
+\end{proof}
+
+Over $\mathbb{Z}$, this motivates a new corollary. 
+
+\begin{corollary}
+  Let $n, m \in \mathbb{Z}$ coprime. Then, for any $a_1, a_2 \in \mathbb{Z}$, there exists an $a$ such that it is equivalent to $a_1$ mod $n$, and $a_2$ mod $m$. The set of solutions is given by $\{a + nm\mathbb{Z}\}$. 
+\end{corollary}
+\begin{proof}
+  By Bezout's theorem, there exist $x, y \in \mathbb{Z}$ such that 
+  \[
+    xm + yn = 1 \Rightarrow (m) + (n) = \mathbb{Z}
+  \]
+  This allows us to apply the CRT directly, showing that the $a$ we are looking for exists. The set of solutions is therefore equal to $\{a + nm\mathbb{Z}\}$, applying Theorem \ref{idealops} to $I \cap J$ after recognizing that $\gcd(n, m) = 1 \Rightarrow \lcm(n, m) = nm$. 
+\end{proof}
+
+\aparte{Some more}{
+  We can also generalize this result over more than two congruences! For $d_1, ..., d_r \in \mathbb{Z}$ that are pairwise coprime. Then, for any set of congruences $a_1, ..., a_r \in \mathbb{Z}$, there exists an $a \in \mathbb{Z}$ such that 
+  \[
+    \begin{cases}
+      a \equiv a_1\  (\mod d_1) \\
+      a \equiv a_2\  (\mod d_2) \\
+      ... \\
+      a \equiv a_r\  (\mod d_r) \\
+    \end{cases}
+  \]
+  This choice of $a$ is unique up to the ideal $(d_1...d_r)$, meaning that the set of solutions is given by $\{a + (d_1...d_r)\mathbb{Z}\}$. 
+  
+  Proof of this can be done by induction over $r$. 
+}
+
+\begin{theorem*}
+  If $A \simeq B$ are isomorphic, then their groups of units are isomorphic, as well. The units of a ring are its invertible elements with respect to multiplication. We notate this $A^* \simeq B^*$. 
+\end{theorem*}
+
+As a corollary to this, one can verify the formula that $\tot(nm) = \tot(n) \tot(m)$ when $n$ and $m$ are equal!. In fact, by CRT, we can write
+\[
+  \mathbb{Z}/nm\mathbb{Z} \simeq \mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/m\mathbb{Z}
+\]
+which means that their groups of units are isomorphic as well. Additionally, we have that 
+\[
+  \left(\mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/m\mathbb{Z}\right)^* \simeq \left(\mathbb{Z}/n\mathbb{Z}\right)^* \times \left(\mathbb{Z}/m\mathbb{Z}\right)^*
+\]
+
+Therefore, we get : 
+\[
+  \tot(nm) = |\left(\mathbb{Z}/nm\mathbb{Z}\right)^*| = |\left(\mathbb{Z}/n\mathbb{Z} \times \mathbb{Z}/m\mathbb{Z}\right)^*| = |\left(\mathbb{Z}/n\mathbb{Z}\right)^*| |\left(\mathbb{Z}/m\mathbb{Z}\right)^*| = \tot(n)\tot(m)
+\]
+
+\section{Polynomial Rings}
+
+\begin{definition}
+  Let $A$ be a commutative ring. Then, we define the \emph{ring of polynomials on $A$} as 
+  \[
+    A[x] = \{a_0 + a_1x + ... + a_nx^n\}_{n \in \mathbb{N}}
+  \]
+  with the usual polynomial addition and multiplication. Since it contains $0$ and $1$, it is a well defined ring, and it is commutative by definition of addition and multiplication. 
+\end{definition}
+\begin{definition}
+  If $f \in A[x]$ is nonzero, then we define the \emph{degree} of $f(x) = a_0 + ... + a_nx^n$ as the largest $n$ such that $a_n \neq 0$. We then write $\deg(f) = n$. If $f = 0$, then $\deg(f) = -\infty$ by convention\footnotemark.
+\end{definition}
+\footnotetext{To convince yourself of why, consider the (intuitive) property of two polynomials $P, Q$: $\deg(P \cdot Q) = \deg P + \deg Q$. In this case, since $0 \cdot P = 0$, we want $\deg(P \cdot 0) = \deg P + \deg 0 = \deg 0$, which is only matched if $\deg 0 = -\infty$.}
+
+\begin{theorem*}
+  Let $f, g$ be two polynomials. Then, 
+  \begin{gather*}
+    \deg (f + g) \leqslant \max\{\deg f, \deg g\} \\
+    \deg (f \cdot g) = \deg(f) + \deg(g)
+  \end{gather*}
+\end{theorem*}
+\begin{proof}
+  Direct computation. 
+\end{proof}
+
+\begin{theorem*}
+  Let $A$ be an integral domain. Then $A[x]$ is an integral domain, and its units are the units of $A$. 
+\end{theorem*}
+\begin{proof}
+  We can first check to see whether or not it is an integral domain. To do this, consider two polynomials such that their product is 0: 
+  \begin{gather*}
+    f \cdot g = 0 \Leftrightarrow \deg f + \deg g = -\infty \\
+    \Rightarrow \deg f = -\infty \text{ or } \deg g = -\infty \\
+    \Rightarrow f = 0 \text{ or } g = 0
+  \end{gather*}
+  
+  Then, we consider the units: 
+  \begin{gather*}
+    f \cdot g = 1 \Leftrightarrow \deg f + \deg g = 0 \\
+    \Rightarrow f = a_0, g = b_0 \in A : a_0 \cdot b_0 = 1
+  \end{gather*}
+\end{proof}
+
+
+\begin{theorem}[Euclidean division in a polynomial ring]
+  Let $F$ a field, $f, d \in F[x]$ of degree $\geqslant 1$. Then, there exist $q, r \in F[x]$ such that 
+  \[
+    f(x) = d(x)q(x) + r(x)
+  \]
+  and either $r = 0$ or $\deg r < \deg d$. 
+\end{theorem}
+\begin{proof}
+  There are multiple cases: 
+  \begin{itemize}
+    \item If $\deg f < \deg q$, then $f(x) = 0 \cdot d(x) + f(x)$, meaning $f = r$. 
+    \item If $\deg f >= \deg q$, then we have: 
+    \begin{gather*}
+      f(x) = a_0 + ... + a_mx^m \\
+      d(x) = b_0 + ... + b_nx^n, n \leqslant m
+    \end{gather*}
+    meaning that we can rewrite
+    \[
+      f(x) - d(x) \cdot \frac{a_m}{b_n}x^{m-n} = p_1(x)
+    \]
+    such that $p_1$ is of smaller degree than $f$. If $\deg p_1 \geqslant \deg d$, repeat: 
+    \[
+      f(x) - d(x) \cdot \frac{a_m}{b_n}x^{m-n} \cdot \frac{a_{m - 1}}{b_n}x^{m-n-1} \cdot ...
+    \]
+    Until you end up at a form such that $\deg (f - dq) < \deg d$. Since the degree is strictly decreasing at every step, this is guaranteed to happen at some point, and therefore, the process terminates.
+  \end{itemize}
+\end{proof}
+
+\aparte{Method}{
+  This is much easier to do as a polynomial long division! I'll put resources here on how to do it and how to do it fast, since there is literally no cool way to typeset them\footnotemark[0]. 
+}
+\footnotetext{Read: I lack the time to typeset this properly}
+
+\begin{definition}
+  A commutative ring $A$ is called an \emph{Euclidean domain} if it is an integral domain and there exists a function $\nu: A \smallsetminus \{0\} \to \mathbb{N}$ such that $\forall a, b \in A, b \neq 0 \ \exists q, r \in A: a = qb + r$ and either $r = 0$ or $\nu(r) < \nu(b)$.
+\end{definition}
+\aparte{Examples}{
+  Let us consider some examples: 
+  \begin{enumerate}
+    \item[(1)] $\mathbb{Z}$ with $\nu(n) = |n|$. 
+    \item[(2)] Any field: $a = bq + 0$. 
+    \item[(3)] $\mathbb{F}[x]$ over a field $\mathbb{F}[x]$, with $\nu(f) = \deg(f)$. 
+  \end{enumerate}
+}
+
+\begin{theorem*}
+  A Euclidean domain is a PID. 
+\end{theorem*}
+\begin{proof}
+  Let $E$ a Euclidean domain, $I \subset E$ an ideal within $E$. If $I = \{0\}$, then $I = (0)$. If it isn't, then consider an element $d$ within it, non-zero, such that $\nu(d)$ is minimal over $I$. Suppose $a \in I$. Therefore, there exists $q, r$ such that $a = qd + r$. Since $r$ is $I$, then either $\nu(r) < \nu(d)$, which is impossible, since it contradicts our definition of $d$, or $r = 0$. Therefore, $r = 0$, meaning $a = qd$, meaning $I = (d)$ which makes $E$ a PID. 
+\end{proof}
