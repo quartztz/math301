@@ -45,6 +45,7 @@
 \def\labelitemi{\ensuremath{\triangleright}}
 \renewcommand{\theenumi}{\small {(\roman{enumi})}}
 \definecolor{blueish}{RGB}{80, 150, 150}
+\definecolor{redish}{RGB}{160, 70, 60}
 \renewcommand{\emph}[1]{{\color{blueish} #1}}
 
 % specific algebra stuff
@@ -60,13 +61,15 @@
 \newcommand{\lcm}{\ensuremath\operatorname{lcm}}
 \renewcommand{\mod}{\ensuremath\operatorname{mod}}
 \renewcommand{\emptyset}{\varnothing}
+\renewcommand{\bar}{\overline}
 
 % specific maths stuff
 \newtheorem*{theorem*}{Proposition}
 \newtheorem*{unnumthm}{Theorem}
-\newtheorem{example}{Example}
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{plain}
+\newtheorem{example}{Example}
 \newtheorem{definition}[theorem]{Definition}
 
 \title{Algebra - MATH310}
@@ -86,6 +89,12 @@
   The group operation for a group $G$ will usually be denoted $\cdot_G$, and its neutral element will be $e_G$. The index will be removed when it can be inferred from context. 
 
   For now, I'll denote $\mathbf{n} = \{1, ..., n\}$, because it's clunky to type and it's my notes, goddamnit. I might change it back at the end.
+
+  Also sometimes I get caught up and I use the weird (though admittedly concise) notation:
+  \begin{center}
+    ``... consider an $0 \neq a \in A$''
+  \end{center}
+  which is to be read as ``consider an $a$ in $A$ such that it is non zero''. Sorry for the confusion.
 
   \tableofcontents
 
