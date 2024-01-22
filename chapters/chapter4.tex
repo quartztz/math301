@@ -1,7 +1,7 @@
 \chapter{Rings and fields}
 
 \marginpar{Week 8}
-\section{F*!king finally!}
+\section{One to rule them all}
 
 \begin{definition}
   A \emph{ring} is a set $A$ with two operations defined on it: $+$ and $\cdot$, in such a way that
@@ -589,3 +589,212 @@ Therefore, we get :
 \begin{proof}
   Let $E$ a Euclidean domain, $I \subset E$ an ideal within $E$. If $I = \{0\}$, then $I = (0)$. If it isn't, then consider an element $d$ within it, non-zero, such that $\nu(d)$ is minimal over $I$. Suppose $a \in I$. Therefore, there exists $q, r$ such that $a = qd + r$. Since $r$ is $I$, then either $\nu(r) < \nu(d)$, which is impossible, since it contradicts our definition of $d$, or $r = 0$. Therefore, $r = 0$, meaning $a = qd$, meaning $I = (d)$ which makes $E$ a PID. 
 \end{proof}
+
+\begin{theorem}[Unproven] 
+  If $F$ is a field, then $F[x]$ is a Euclidean domain. 
+\end{theorem}
+
+\marginpar{Week 11}
+\begin{definition}
+Let $A$ be a commutative ring. We say that $a$ \emph{divides} $b$ for $a, b \in A$ if there exists $c \in A: b = ac$. Over an integral domain, we also define: 
+\begin{itemize}
+  \item The \emph{$\gcd$} of $a, b$, is $d$ such that it divides $a$ and $b$, and $(c|a \land c|b) \Rightarrow c|d \ \forall c$
+  \item The \emph{$\lcm$} of $a, b$, is $l$ such that $a$ and $b$ divide it, and $(a|m \land b|m) \Rightarrow l|m \ \forall m$
+\end{itemize} 
+In general, these two are not unique. 
+\end{definition}
+
+\begin{theorem*}
+  Let $A$ be an integral domain. If $d_1, d_2$ are two $\gcd$s of $a, b$, then $d_1 = xd_2$, with $x \in A^*$ a unit, and if $l_1, l_2$ are two $\lcm$s of $a, b$, then $l_1 = yl_2$, with $y \in A^*$ a unit. 
+\end{theorem*}
+\begin{proof}
+  We only prove the case for the gcd: the argument is similar for the lcms. 
+  Since we are in an integral domain, we know that there exist $x, z$ such that $d_1 = xd_2, d_2 = zd_1$. This means that 
+  \[
+    d_1 = xd_2 = xzd_1 \Rightarrow d_1(1 - xz) = 0 \stackrel{d_1 \neq 0}{\Rightarrow} xz = 1
+  \]
+  meaning that $x$ and $z$ are two units. 
+\end{proof}
+
+\begin{definition}
+  Let $A$ be an integral domain. Then, we say that $a, b \in A$ are associates if there exists a unit $u \in A^*$ such that $a = bu$. 
+\end{definition}
+
+\aparte{Remark and examples}{
+  Associates generate the same ideals in a PID!
+
+  If $g = uf$, then $g \in (f)$, meaning $(g) \subset (f)$. Similarly and symmetrically, we have that $f = gv \Rightarrow f \in (g) \Rightarrow (f) \subset (g)$. Since we have mutual inclusion, we get $(f) = (g)$. 
+
+  In $\mathbb{Z}$, the units are $\pm 1$, meaning that two integers $n, m$ are associates only if they are equal or relative opposites ($n = -m$). This implies $(m) = (-m)$. 
+
+  In $F[x]$, with $F$ a field, the units are $F \smallsetminus \{0\}$. Therefore, two polynomials $f, g$ are associates if they are a non zero constant apart, $f = \alpha g, \alpha \in F^*$. 
+}
+
+\aparte{Properties}{
+  Let $a, b \in A$, $A$ a Euclidean domain. Then, we have: 
+  \begin{enumerate}
+    \item[1.] $\gcd(a, b)$ can be found by successive euclidean division: 
+    \[
+      \begin{cases}
+        a = q_1b + r_1 \\
+        b = q_2r_1 + r_2 \\
+        ...
+      \end{cases}
+    \]
+    \item[2.] $(a) + (b) = (\gcd(a, b))$ 
+    \item[3.] $(a) \cap (b) = (\lcm(a, b))$
+    \item[4.] $\gcd(a, b) = 1 = \gcd(a, c) \Rightarrow \gcd(a, bc) = 1$
+    \item[4.] $\gcd(a, b) = 1 \Rightarrow \lcm(a, b) = ab$
+  \end{enumerate}
+}
+
+\section{CRT but again}
+
+\begin{theorem}[CRT over Euclidean domains]
+  Let $E$ be a Euclidean domain, and consider  $m_1, ..., m_r \in E: \gcd(m_i, m_j) = 1, i \neq j$. Then, the function: 
+  \begin{align*}
+    f : E/(m_1...m_r) &\to E/m_1 \times ... \times E/m_r \\
+          [x]_{(m_1...m_r)} &\mapsto ([x]_{(m_1)}, ..., [x]_{(m_r)})
+  \end{align*}
+  is a ring homomorphism
+\end{theorem}
+\aparte{Sketch of proof}{
+  The proof follows a few basic steps. 
+  \begin{enumerate}
+    \item[1)] It is a ring isomorphism by construction
+    \item[2)] We verify surjectivity by induction over the factors: first, we construct $a_{12}$ such that it is equivalent to $a_1$ mod $m_1$ and $a_2$ mod $m_2$. To do this, we had to use the fact that $\gcd(m_1, m_2) = 1 \Rightarrow (m_1) + (m_2) = E$. Therefore, we can construct $a_{123}$ such that it is equivalent to $a_{12} \mod m_1m_2$ and $a_3 \mod m_3$, using the fact that $\gcd(m_3, m_1m_2) = 1$. Continue doing this until every congruence is met! Then, we get an $a_{12...r}$ which maps to our original $(a_1, ..., a_r)$, meaning our function is surjective. 
+    \item[3)] We verify injectivity by considering an $a, b: a \equiv a_i (\mod m_i), b \equiv a_i (\mod m_i) \ \forall i$. Therefore, we have 
+    \[
+      a - b \in \bigcap_{r} (m_i) = (\lcm(m_1...m_r)) = (m_1...m_r)
+    \]
+  \end{enumerate}
+}
+\begin{corollary}
+  Let $F$ be a field, $\{f_1, ..., f_r\}$ a family of polynomials of $F[x]$ such that their pairwise $\gcd$ is 1. Then,
+  \[
+    F[x]/(f_1...f_r) \simeq F[x]/f_1 \times F[x]/f_2 \times ... \times F[x]/f_r
+  \]
+\end{corollary}
+\begin{definition}
+  A polynomial is said to be \emph{monic} if its leading coefficient (the coefficient of the highest power of $x$) is equal to 1. 
+\end{definition}
+\aparte{Remark}{
+  The $\gcd$ of two polynomials is defined up to a nonzero constant factor. There exists a \textit{unique} $\gcd$ that is monic, but an infinite number of $\gcd$s that are multiples of the original. 
+}
+
+\section*{Application: Systems of polynomial congruences}
+\addcontentsline{toc}{subsection}{Application: Systems of polynomial congruences}
+
+\aparte{Exercice}{
+  Let $\mathbb{F}_3$ a field, and consider $\mathbb{F}_3[x]$. Find all the solution of the following system of congruences: 
+  \[
+    \begin{cases}
+      f(x) \equiv x + 1 \ (\mod (x^2 + 1) = g_1) \\
+      f(x) \equiv 1 \ (\mod (x) = g_2) \\
+      f(x) \equiv -x \ (\mod (x^2 - 1) = g_3) \\
+    \end{cases}
+  \]
+}
+The three functions can be verified to have pairwise $\gcd$ equal to 1, more often than not by finding $a, b \in \mathbb{F}_3: ag_i + bg_j = 1, i \neq j$.
+\[
+  \begin{cases}
+    x^2 + 1 + x{\color{redish}(2x)} = 1 \\
+    (x^2 - 1)\cdot{\color{redish}2} + x{\color{redish}(x)} = 1 \\
+    (x^2 + 1)\cdot{\color{redish}2} + (x^2 - 1) = 1
+  \end{cases}
+\] 
+Therefore, by the Chinese Remainder Theorem, there exist solutions to the system, and they are of the form $a + (g_1g_2g_3)$. 
+
+How do we find the $a \in \mathbb{F}_3[x]$ to solve this? First, take any two congruences: 
+\[
+  \begin{cases}
+    f \equiv x + 1 \ (\mod (x^2 + 1)) \\
+    f \equiv 1 (\mod (x))
+  \end{cases}
+\]
+We need to find $h, g$ such that 
+\[
+  (x^2 + 1)h(x) + x + 1 = x g(x) + 1 \Rightarrow (x^2 + 1)h(x) - xg(x) = -x
+\]
+We can verify that $h = 1, g = 2x$ gives us $(x^2 + 1) \cdot {\color{redish}1} + x \cdot {\color{redish}(2x)} = 1$, meaning that we have 
+\[
+  f(x) = (x^2 + 1)(-x) + x + 1 = -x^3 + 1 \equiv x + 1 \ (\mod (x^3 + x))
+\]
+Since $\gcd(x^3 + x, x^2 - 1)$, this can be used as a new congruence!
+\[
+  \begin{cases}
+    f(x) \equiv x + 1 \ (\mod x^3 + x) \\
+    f(x) \equiv -x \ (\mod x^2 - 1)
+  \end{cases}
+\]
+
+We finish in the same way: 
+\begin{gather*}
+  h(x)(x^3 + x) + x + 1 = g(x)(x^2 - 1) - x \\
+  h(x)(x^3 + x) - g(x)(x^2 - 1) = x - 1 \\
+  x(x^3 + x) + (-x^2 + 1)(x^2 - 1) = -1 \\
+  \Rightarrow \underbrace{x(-x + 1)}_{h(x)}(x^3 + x) + \underbrace{(-x^2 + 1)(-x + 1)}_{-g(x)}(x^2 - 1) = x - 1
+\end{gather*}
+We replace all of this in our definition, as we did earlier: 
+\begin{align*}
+  f(x) 
+  &= x(-x + 1)(x^3 + x) + x + 1 \\
+  &= x(-x^4 - x^2 + x^3 + x) + x + 1 \\
+  &= -x^5 - x^3 + x^4 + x^2 + x + 1 \\
+  &\equiv x^4 - x^3 + x^2 + 1 \ (\mod x^5 - x) \\
+  &\equiv x^4 + 2x^3 + x^2 + 1 \ (\mod x^5 - x)
+\end{align*}
+giving us our solution!
+
+\aparte{Method}{
+  How do you solve a system of congruences?
+
+  Consider the system 
+  \[
+    f \equiv h_1 \ (\mod g_1) \\
+    f \equiv h_2 \ (\mod g_2)
+  \]
+  Since $\gcd(g_1, g_2) = 1$ There exist $t_1, t_2$ such that 
+  \[
+    t_1g_1 + t_2g_2 = 1
+  \]
+  Meaning that $f = h_1t_2g_2 + h_2t_1g_1$ is a solution\footnotemark! This can be generalized to $r$ equiations: let $G = g_1...g_r, G_i = G/g_i$. Therefore, $\gcd(G_i, g_i) = 1$, meaning that for any $i$; we can find $t_i, s_i: t_iG_i + s_ig_i = 1$. Therefore, our $f$ is a linear combination: 
+  \[
+    f = \sum_{i = 1}^r h_iG_it_i
+  \]
+  which satisfies the right congruences.
+}
+\footnotetext{You can verify the congruences easily.}
+
+\begin{definition}
+  An element $c$ of a ring $A$ is \emph{irreducible} if it is non-zero, not a unit, and $c = ab$ with either $a \in A^*$ or $b \in A^*$. 
+\end{definition}
+
+\begin{definition}
+  $I \subset A$ is \emph{maximal} if there is no ideal $J \subset A$ such that $I \subsetneq J \subsetneq A$
+\end{definition}
+
+\begin{theorem}
+  Let $A$ a principal ideal domain. Then, $p \in A$ is irreducible if and only if $p \neq 0$ and $(p) \subset A$ is maximal.
+\end{theorem}
+\begin{proof}
+  We will prove both directions separately. 
+  \begin{itemize}
+    \item[($\Rightarrow$)] $p$ is irreducible. Suppose that there exists a proper subset $J \subsetneq A$ such that $(p) \subsetneq J$. Since $A$ is a PID, then $J = (d)$, meaning that we can write $p = dt$. Since $p$ is irreducible
+    \begin{itemize}
+      \item either $d$ is a unit, but that would mean that $(d) = (1) = A$, which contradicts the fact that $J$ is a proper subset of $A$; 
+      \item or $t$ is a unit, in which case $p$ and $d$ are associates, and $(d) = (p)$, which contradicts the condition $I \subsetneq J$.
+    \end{itemize}
+    This means that $(p)$ must be maximal. 
+    \item[($\Leftarrow$)] $(p) \subset A$ is maximal. Suppose that $p$ is not irreducible, meaning that there exist $y, z$ that aren't units and that are such that $p = yz$. This means $(p) \subset (y) \subsetneq A$. Let's assume towards contradiction that $(p) = (y)$. Then, $y = pt \Rightarrow p = yz = ptz \Rightarrow p(1 - tz) = 0$. This implies either that $p = 0$ (which is impossible as we assume it isn't) or that $tz = 1$ which is only possible if $z$ is a unit, which we said was not the case. 
+
+    Therefore, if there exist $y, z \notin A^*: p = yz$, then $(p) \subsetneq (y) \subsetneq A$, which contradicts our assumption that $(p)$ was maximal. Therefore, $p$ is irreducible.
+  \end{itemize}
+\end{proof}
+
+\begin{theorem}
+  Let $A$ be a Euclidean domain. Then, $I \subset A$ is maximal $\Leftrightarrow A/I$ is a field $\Leftrightarrow I = (d): d$ is irreducible. 
+\end{theorem}
+\begin{corollary}
+  $\mathbb{F}[x]/(f)$ is a field if and only if $f$ is irreducible. 
+\end{corollary}
